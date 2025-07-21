@@ -30,10 +30,10 @@ class KompetensiDiklatController extends Controller
         $jabatan =  $request->input('jabatan');
         $per_page =  $request->input('per_page') ?? 20;
 
-        $employees = Employee::select('employees.*')
+        $employees = Employee::select('employees.id', 'employees.nip', 'employees.name', 'employees.jabatan')
             ->leftJoin('kompetensi_diklats', 'employees.id', '=', 'kompetensi_diklats.employee_id')
             ->selectRaw('COUNT(kompetensi_diklats.id) as total')
-            ->groupBy('employees.id')
+            ->groupBy('employees.id', 'employees.nip', 'employees.name', 'employees.jabatan')
             ->havingRaw('COUNT(kompetensi_diklats.id) > ?', [0])
             ->orderBy('total', 'DESC');
 
