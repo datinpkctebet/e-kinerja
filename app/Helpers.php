@@ -12,7 +12,8 @@ if (!function_exists('encryptor'))
 {
   function encryptor(string $string)
   {
-    $password   = env('APP_KEY', 'default');
+    // $password   = env('APP_KEY', 'default');
+    $password   = config('app.key');
     $cryptor  = new \RNCryptor\RNCryptor\Encryptor;
 
     return $cryptor->encrypt($string, $password);
