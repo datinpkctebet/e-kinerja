@@ -37,10 +37,10 @@ class EmployeeDiklatController extends Controller
         $per_page =  $request->input('per_page') ?? 20;
 
 
-        $employees = Employee::select('employees.*')
+        $employees = Employee::select('employees.id', 'employees.nip', 'employees.name', 'employees.jabatan')
             ->leftJoin('employee_diklats', 'employees.id', '=', 'employee_diklats.employee_id')
             ->selectRaw('employees.id, SUM(employee_diklats.jpl_diklat) as total')
-            ->groupBy('employees.id')
+            ->groupBy('employees.id', 'employees.nip', 'employees.name', 'employees.jabatan')
             ->orderBy('total', 'DESC');
 
         if (!empty($year)) {
