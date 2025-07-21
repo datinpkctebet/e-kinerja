@@ -29,8 +29,8 @@ if (!function_exists('decryptor'))
 {
   function decryptor(string $string)
   {
-      // $password   = env('APP_KEY', 'default');
-      $password   = config('app.key');;
+    // $password   = env('APP_KEY', 'default');
+    $password   = config('app.key');
     $cryptor  = new \RNCryptor\RNCryptor\Decryptor;
 
     return $cryptor->decrypt($string, $password);
