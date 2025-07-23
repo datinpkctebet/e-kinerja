@@ -41,6 +41,13 @@ class PemberianCutiController extends Controller
             $param ['status'] = '3,4';
         }
 
+        if (session('employee')['privilege'] === 'Pustu') {
+            $param = [
+                'status' => '4',
+                'unit_kerja' => session('employee')['unit_kerja']
+            ];
+        }
+
         $data = [
             'list' => $this->surat_pengajuan->findWithPaginate($param),
         ];
@@ -161,7 +168,7 @@ class PemberianCutiController extends Controller
             'employee' => $this->employee->find($list->employee_id),
         ];
 
-        $name = $data['employee'][0]['nip'] .' '. $data['employee'][0]['name'] .' '. $data['list']['jenis'] .'.pdf';
+        $name = $data['employee']['nip'] .' '. $data['employee']['name'] .' '. $data['list']['jenis'] .'.pdf';
         $pdf = PDF::loadView('pages.pemberian-cuti.exportPemberianCuti', $data);
 
         // return view('pages.pemberian-cuti.exportPemberianCuti', $data);

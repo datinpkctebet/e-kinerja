@@ -272,6 +272,7 @@ class EmployeeRepository extends AbstractRepository implements EmployeeInterface
             "Kapuskesmas",
             "Administrator",
             "Writer",
+            "Pustu",
         ];
     }
 

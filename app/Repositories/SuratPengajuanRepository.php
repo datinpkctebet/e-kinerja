@@ -23,15 +23,27 @@ class SuratPengajuanRepository extends AbstractRepository implements SuratPengaj
         $perpage = $param['perpage'] ?? 10;
         $employee_id = $param['employee_id'] ?? '';
         $status = $param['status'] ?? '';
+        $unit_kerja = $param['unit_kerja'] ?? '';
 
-        $data = SuratPengajuan::orderBy('created_at', 'DESC');
+        if (!empty($unit_kerja)) {
+            $data = SuratPengajuan::join('employees', 'surat_pengajuans.employee_id', '=', 'employees.id')
+                ->orderBy('surat_pengajuans.created_at', 'DESC')
+                ->select('surat_pengajuans.*', 'employees.unit_kerja');
 
-        if ($employee_id) {
-            $data->where('employee_id', $employee_id);
+                
+            if ($unit_kerja) {
+                $data->where('employees.unit_kerja', $unit_kerja);
+            }
+        } else {
+            $data = SuratPengajuan::orderBy('surat_pengajuans.created_at', 'DESC');
         }
-
+            
+        if ($employee_id) {
+            $data->where('surat_pengajuans.employee_id', $employee_id);
+        }
+        
         if ($status) {
-            $data->whereIn('status', explode(',', $status));
+            $data->whereIn('surat_pengajuans.status', explode(',', $status));
         }
 
         $data = $data->paginate($perpage);

@@ -58,7 +58,7 @@
                   </button>
                   @endif
 
-                  @if ($value->status == 1 AND session('employee')['privilege'] === 'Administrator')
+                  @if ($value->status == 1 AND session('employee')['privilege'] === 'Administrator' || 'Pustu')
                   <a href="{{ URL('/pemberian-cuti/'. $value->id) }}">
                     <button type="button" class="btn btn-warning">
                     <i class="fa fa-edit"></i>
@@ -66,7 +66,7 @@
                   </a>
                   @endif
 
-                  @if (session('employee')['privilege'] === 'Administrator')
+                  @if (session('employee')['privilege'] === 'Administrator' || 'Pustu')
                     @if ($value->status == 2 || $value->status == null)
                     <a href="{{ URL('/surat-cuti/accept/'. $value->id) }}">
                       <button type="button" class="btn btn-success">

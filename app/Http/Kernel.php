@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'absensi' => \App\Http\Middleware\Absensi::class,
         'pegawai' => \App\Http\Middleware\Pegawai::class,
         'writer' => \App\Http\Middleware\Writer::class,
+        'pustu' => \App\Http\Middleware\Pustu::class,
     ];
 
     /**

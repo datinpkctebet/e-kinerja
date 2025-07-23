@@ -40,6 +40,12 @@ class SuratPengajuanController extends Controller
             $param ['status'] = '';
         }
 
+        if (session('employee')['privilege'] === 'Pustu') {
+            $param = [
+                'unit_kerja' => session('employee')['unit_kerja']
+            ];
+        }
+
         $data = [
             'list' => $this->model->findWithPaginate($param),
         ];

@@ -217,6 +217,24 @@ if (!function_exists('setMenu'))
             ],
         ];
 
+        $pustu = [
+            [
+                'name' => 'Dashboard',
+                'url' => 'dashboard',
+                'icon' => 'flaticon2-architecture-and-city',
+            ],
+            [
+                'name' => 'Pengajuan Cuti Pegawai',
+                'url' => 'surat-cuti',
+                'icon' => 'flaticon-notes',
+            ],
+            [
+                'name' => 'Persetujuan Cuti oleh Pimpinan',
+                'url' => 'pemberian-cuti',
+                'icon' => 'flaticon-calendar-1',
+            ],
+        ];
+
         $privilege = session('employee')['privilege'];
 
         if ($privilege === 'Administrator') {
@@ -227,6 +245,8 @@ if (!function_exists('setMenu'))
             return $absensi;
         } else if ($privilege === 'Writer') {
             return $writer;
+        } else if ($privilege === 'Pustu') {
+            return $pustu;
         } else {
             return $employee;
         }

@@ -45,26 +45,28 @@
                 @endif
 
                 <td  class="text-right" style="min-width: 18rem;">
-                  <a href="{{ URL('/pemberian-cuti/export/'. $value->id) }}">
+                  <a href="{{ URL('/pemberian-cuti/export/'. $value->id) }}" target="_blank" rel="noopener">
                     <button type="button" class="btn btn-success">
                     <i class="fa fa-file-pdf"></i>
                     Preview</button>
                   </a>
 
-                  @if ($value->status != 4)
-                    <button type="button" class="btn btn-info" onclick="lockCuti('/surat-cuti/lock', {{ $value->id }})">
-                      <i class="fa fa-lock"></i> Setujui
-                    </button>
+                  @if (session('employee')['privilege'] === 'Administrator')
+                    @if ($value->status != 4)
+                      <button type="button" class="btn btn-info" onclick="lockCuti('/surat-cuti/lock', {{ $value->id }})">
+                        <i class="fa fa-lock"></i> Setujui
+                      </button>
 
-                    <a href="{{ URL('/pemberian-cuti/edit/'. $value->id) }}">
-                      <button type="button" class="btn btn-warning">
-                      <i class="fa fa-pencil-alt"></i>
-                      Ubah</button>
-                    </a>
+                      <a href="{{ URL('/pemberian-cuti/edit/'. $value->id) }}">
+                        <button type="button" class="btn btn-warning">
+                        <i class="fa fa-pencil-alt"></i>
+                        Ubah</button>
+                      </a>
 
-                    <button type="button" class="btn btn-danger" onclick="deleteRow('/surat-cuti', {{ $value->id }})">
-                      <i class="fa fa-window-close"></i> Tolak
-                    </button>
+                      <button type="button" class="btn btn-danger" onclick="deleteRow('/surat-cuti', {{ $value->id }})">
+                        <i class="fa fa-window-close"></i> Tolak
+                      </button>
+                    @endif
                   @endif
                 </td>
               </tr>

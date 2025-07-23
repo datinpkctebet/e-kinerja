@@ -361,4 +361,17 @@ Route::group(['middleware' => 'member'], function()
         Route::post('setup-form-cuti/edit/{id}', 'SetupFormCutiController@store');
         Route::get('setup-form-cuti/delete/{id}', 'SetupFormCutiController@destroy');
     });
+
+
+    Route::group(['middleware' => 'pustu'], function() {
+        /*
+        |--------------------------------------------------------------------------
+        | SURAT PENGAJUAN
+        |--------------------------------------------------------------------------
+        */
+        Route::get('surat-cuti', 'SuratPengajuanController@index');
+        Route::get('surat-cuti/accept/{id}', 'SuratPengajuanController@accept');
+        Route::get('surat-cuti/decline/{id}', 'SuratPengajuanController@decline');
+        Route::get('surat-cuti/delete/{id}', 'SuratPengajuanController@destroy');
+    });
 });
