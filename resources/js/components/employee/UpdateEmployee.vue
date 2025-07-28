@@ -4,13 +4,14 @@
       <div class="kt-portlet__head">
         <div class="kt-portlet__head-toolbar">
           <ul class="nav nav-tabs nav-tabs-space-xl nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-brand" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#kt_apps_user_edit_tab_1" role="tab">
+            <!-- Sembunyikan tab Data Diri jika Pegawai -->
+            <li class="nav-item" v-if="currentPrivilege !== 'Pegawai'">
+              <a class="nav-link" :class="{ active: currentPrivilege !== 'Pegawai' }" data-toggle="tab" href="#kt_apps_user_edit_tab_1" role="tab">
                 <i class="fa fa-user"></i> Data Diri
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#kt_apps_user_edit_tab_2" role="tab">
+              <a class="nav-link" :class="{ active: currentPrivilege === 'Pegawai' }" data-toggle="tab" href="#kt_apps_user_edit_tab_2" role="tab">
                 <i class="fa fa-book-open"></i> Data Pendidikan
               </a>
             </li>
@@ -34,7 +35,8 @@
                 <i class="fa fa-suitcase"></i>Diklat
               </a>
             </li>
-            <li class="nav-item">
+            <!-- Sembunyikan tab Hukuman Disiplin jika Pegawai -->
+            <li class="nav-item" v-if="currentPrivilege !== 'Pegawai'">
               <a class="nav-link" data-toggle="tab" href="#kt_apps_user_edit_tab_7" role="tab">
                 <i class="fa fa-shield-alt"></i>Hukuman Disiplin
               </a>
@@ -59,7 +61,7 @@
       <div class="kt-portlet__body">
         <form action="" method="">
           <div class="tab-content">
-            <div class="tab-pane active" id="kt_apps_user_edit_tab_1" role="tabpanel">
+            <div class="tab-pane" :class="{ active: currentPrivilege !== 'Pegawai' }" id="kt_apps_user_edit_tab_1" role="tabpanel">
               <data-diri
                 :dataDiri="form.data_diri"
                 :agama="agama"
@@ -80,7 +82,7 @@
             <!-----------------------------------
               DATA PENDIDIKAN
              ----------------------------------->
-            <div class="tab-pane" id="kt_apps_user_edit_tab_2" role="tabpanel">
+            <div class="tab-pane" :class="{ active: currentPrivilege === 'Pegawai' }" id="kt_apps_user_edit_tab_2" role="tabpanel">
               <div class="kt-form__body" v-for="(pendidikan, pendidikanIndex) in form.pendidikans" :key="pendidikanIndex">
                 <div class="form-group row">
                   <div class="col-lg-6">

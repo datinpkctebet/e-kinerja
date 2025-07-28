@@ -26,6 +26,9 @@
                 <button type="button" class="btn btn-warning btn-bold">Reset Password</button>
               </a>
               @endif
+              <a href="#">
+                <button type="button" class="btn btn-success btn-bold">Cetak ID Card</button>
+              </a>
               <a href="{{ URL('/employee/export/'. $data->id ) }}">
                 <button type="button" class="btn btn-danger btn-bold">Export Data</button>
               </a>

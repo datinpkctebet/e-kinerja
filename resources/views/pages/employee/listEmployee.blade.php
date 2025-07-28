@@ -83,9 +83,9 @@
                     Lihat</button>
                   </a>
 
-                  <!-- <button type="button" class="btn btn-danger" onclick="deleteRow('/employee', {{ $value->id }})">
+                  <button type="button" class="btn btn-danger" onclick="deleteRow('/employee', {{ $value->id }})">
                   <i class="fa fa-window-close"></i>
-                  Hapus</button> -->
+                  Hapus</button>
                 </td>
 
               </tr>

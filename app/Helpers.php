@@ -495,3 +495,16 @@ if (!function_exists('getListYears'))
     }
 }
 
+if (!function_exists('pretty_dump')) {
+    function pretty_dump($data, $exit = true)
+    {
+        echo '<pre style="background: #1e1e1e; color: #dcdcdc; padding: 10px; font-size: 14px; line-height: 1.4em; border-radius: 5px;">';
+        var_dump($data);
+        echo '</pre>';
+
+        if ($exit) {
+            exit;
+        }
+    }
+}
+
