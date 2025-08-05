@@ -136,7 +136,8 @@ class EmployeeRepository extends AbstractRepository implements EmployeeInterface
     {
         return \DB::table('employees')
             ->select('id', 'name')
-            ->limit($this->employee_limit)
+            ->where('active', 1)
+            // ->limit($this->employee_limit)
             ->get();
     }
 
