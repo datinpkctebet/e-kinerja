@@ -270,12 +270,41 @@ class EmployeeDiklatController extends Controller
      * @param  \App\Models\EmployeeDiklat  $employee_diklat
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EmployeeDiklat $employee_diklat)
+    public function destroy(EmployeeDiklat $employee_diklat, $id = false)
     {
-        $employee_diklat->delete();
+        try {
+            if (!$id) {
+                throw new Exception('ID tidak ditemukan');
+            }
 
-        return response()->json([
-            'message' => 'Diklat Karyawan Berhasil Dihapus'
-        ]);;
+            $employee_diklat = EmployeeDiklat::find($id);
+            
+            if (!$employee_diklat) {
+                throw new Exception('Diklat Karyawan tidak ditemukan.');
+            }
+            
+            if ($employee_diklat->employee_id != session('employee')['id']) {
+                throw new Exception('Anda tidak memiliki akses untuk menghapus diklat ini.');
+            }
+            
+            // delete record
+            $delete_record = $employee_diklat->delete();
+            if (!$delete_record) {
+                throw new Exception('Gagal menghapus diklat Karyawan.');
+            }
+            
+            // delete file
+            $filePath = public_path(env('PATH_DIKLAT') . $employee_diklat->file);
+            if (\File::isFile($filePath)) {
+                $delete_file = \File::delete($filePath);
+                if (!$delete_file) {
+                    throw new Exception('Gagal menghapus file diklat Karyawan.');
+                }
+            }
+
+            return redirect('/diklat')->with('success_message', 'Diklat Karyawan berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect('/diklat')->with('error_message', 'Terjadi kesalahan saat menghapus diklat: ' . $e->getMessage());
+        }
     }
 }
