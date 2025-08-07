@@ -51,7 +51,7 @@ Route::group(['middleware' => 'member'], function()
     */
     Route::get('employee/update/{id}', 'EmployeeController@update');
     Route::post('employee/update/{id}', 'EmployeeController@update');
-    Route::post('employee/upload/', 'EmployeeController@upload');
+    Route::post('employee/upload-data', 'EmployeeController@upload');
     Route::get('employee/export/{id}', 'EmployeeController@export');
 
     /*

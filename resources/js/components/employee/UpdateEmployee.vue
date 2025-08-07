@@ -1426,7 +1426,7 @@ export default {
 
     updateFile(formData) {
       return new Promise((resolve) => {
-         this.axios.post('/employee/upload/', formData)
+         this.axios.post('/employee/upload-data', formData)
           .then((result) => {
             resolve();
           })
