@@ -8,7 +8,7 @@
       <!--begin::Aside-->
 
       <!--begin::Content-->
-      <div class="kt-grid__item kt-grid__item--fluid  kt-grid__item--order-tablet-and-mobile-1  kt-login__wrapper" style="background-image: url(/media//bg/bg-100.jpg);">
+      <div class="kt-grid__item kt-grid__item--fluid  kt-grid__item--order-tablet-and-mobile-1  kt-login__wrapper">
         <!--begin::Head-->
         <div class="kt-login__head">
           @php
