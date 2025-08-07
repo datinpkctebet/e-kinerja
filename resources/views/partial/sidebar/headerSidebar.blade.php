@@ -1,6 +1,6 @@
 <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
   <div class="kt-aside__brand-logo">
-    <a href="https://www.pkctebet.com">
+    <a href="https://puskesmastebet.com/">
       <img alt="Logo" src="{{ asset('media/logos/logotebetputih.png') }}" width="auto" height="64" class="mt-4"/>
     </a>
   </div>

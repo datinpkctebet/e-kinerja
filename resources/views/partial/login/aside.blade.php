@@ -1,6 +1,6 @@
 <div class="kt-grid__item kt-grid__item--order-tablet-and-mobile-2 kt-grid kt-grid--hor kt-login__aside" style="background-image: url(/media//bg/bg-7.jpg);">
   <div class="kt-grid__item">
-    <a href="https://www.pkctebet.com" class="kt-login__logo">
+    <a href="https://puskesmastebet.com/" class="kt-login__logo">
       <img src="/media/logos/logotebetputih.png" alt="Logo" width="auto" height="64"/>
     </a>
   </div>
