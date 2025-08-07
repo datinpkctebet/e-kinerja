@@ -1425,7 +1425,6 @@ export default {
     },
 
     updateFile(formData) {
-      console.log('updateFile triggered');
       return new Promise((resolve) => {
          this.axios.post('/employee/upload-data', formData)
           .then((result) => {

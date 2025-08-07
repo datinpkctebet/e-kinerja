@@ -363,7 +363,7 @@ if (!function_exists('getDowloadDocument'))
     function getDowloadDocument($name)
     {
         if ($name) {
-            return '<a href="'. asset(env('PATH_DOCUMENT')) .'/'. $name .'">download</a>';
+            return '<a href="'. asset(env('PATH_DOCUMENT_DOWNLOAD')) .'/'. $name .'" target="_blank">download</a>';
         }
     }
 }

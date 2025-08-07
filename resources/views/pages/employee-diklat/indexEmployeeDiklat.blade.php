@@ -106,7 +106,7 @@
                 <td class="text-right">{{ $value->jpl_diklat }}</td>
                 <td class="text-center">
                   @if ($value->file)
-                    <a href="{{ URL(env('PATH_DIKLAT') .'/'. $value->file) }}" target="_blank">
+                    <a href="{{ URL(env('PATH_DIKLAT_DOWNLOAD') .'/'. $value->file) }}" target="_blank">
                       Download
                     </a>
                   @endif
