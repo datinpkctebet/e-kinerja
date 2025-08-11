@@ -120,7 +120,8 @@ class EmployeeRepository extends AbstractRepository implements EmployeeInterface
                 $query->whereMonth('date', $month)
                       ->whereYear('date', $year);
             })
-            ->limit($this->employee_limit)
+            ->where('active', 1)
+            // ->limit($this->employee_limit)
             ->get();
 
         return $employee;
