@@ -97,9 +97,11 @@ class PemberianCutiController extends Controller
         }
 
         $cacheTime = 3600 * +env('CACHE_TIME', 24);
-        $employee = \Cache::remember('employee-select', $cacheTime, function () {
-            return $this->employee->getEmployeeSelect();
-        });
+        // $employee = \Cache::remember('employee-select', $cacheTime, function () {
+        //     return $this->employee->getEmployeeSelect();
+        // });
+
+        $employee = $this->employee->getEmployeeSelect();
 
         $data = [
             'list' => $list,

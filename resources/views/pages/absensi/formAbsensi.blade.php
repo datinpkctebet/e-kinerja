@@ -22,7 +22,8 @@
         <div class="col-9">
           <select id="kt_select2_3" class="form-control kt-select2" name="employee_id">
             @foreach ($employee as $value)
-            <option value="{{ $value->id }}" @if(@$list['employee_id'] == $value) selected @endif>{{ $value->name }}</option>
+            <!-- <option value="{{ $value->id }}" @if(@$list['employee_id'] == $value) selected @endif>{{ $value->name }}</option> -->
+            <option value="{{ optional($value)->id }}" @if(optional($value)->id == old('employee_id', @$list['employee_id'])) selected @endif>{{ optional($value)->name }}</option>
             @endforeach
           </select>
         </div>

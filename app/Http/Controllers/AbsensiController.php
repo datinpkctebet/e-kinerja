@@ -106,9 +106,11 @@ class AbsensiController extends Controller
 
         $cacheTime = 3600 * +env('CACHE_TIME', 24);
         $cacheName = 'employee-by-absensi-'. $param['month'] .'-'. $param['year'];
-        $employee = \Cache::remember($cacheName, $cacheTime, function () use ($param) {
-            return $this->employee->getEmployeeByAbsensi($param);
-        });
+        // $employee = \Cache::remember($cacheName, $cacheTime, function () use ($param) {
+        //     return $this->employee->getEmployeeByAbsensi($param);
+        // });
+
+        $employee = $this->employee->getEmployeeByAbsensi($param);
 
         $data = [
             'list' => $list,
