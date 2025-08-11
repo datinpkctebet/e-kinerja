@@ -134,6 +134,7 @@ class ValidationActivityController extends Controller
 
         // Update all activities for the employee
         $data = $this->activity->findWithPaginate([
+            'perpage' => 100,
             'employee_id' => $employee_id,
             'month' => $month,
             'year' => $year,

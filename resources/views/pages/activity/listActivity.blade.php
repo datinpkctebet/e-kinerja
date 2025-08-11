@@ -73,7 +73,7 @@
 
       @if (@$isKapuskes)
       <div class="mt-3">
-        <a href="{{ URL('/validation/'. $employee_id .'/accept_all') }}">
+        <a href="{{ URL(setParamUrl('/validation/'. $employee_id .'/accept_all')) }}">
           <button type="button" class="btn btn-success">
             <i class="fa fa-check"></i> diterima semua
           </button>
