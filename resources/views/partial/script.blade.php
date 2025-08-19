@@ -40,6 +40,7 @@ var KTAppOptions = {
 <script src="{{ asset('vendors/general/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendors/custom/js/vendors/bootstrap-timepicker.init.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendors/general/bootstrap-daterangepicker/daterangepicker.js') }}" type="text/javascript"></script>
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script> -->
 <script src="{{ asset('vendors/general/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendors/general/bootstrap-maxlength/src/bootstrap-maxlength.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendors/custom/vendors/bootstrap-multiselectsplitter/bootstrap-multiselectsplitter.min.js') }}" type="text/javascript"></script>

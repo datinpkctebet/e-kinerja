@@ -46,7 +46,7 @@
                 <td class="text-center">{{ $value->selesai }}</td>
                 <td class="text-center">{!! isVerifyHtml($value->status) !!}</td>
                 <td  class="text-right" style="min-width: 18rem;">
-                  @if (session('employee')['privilege'] === 'Pegawai' AND $value->status != 4)
+                  @if (session('employee')['privilege'] === 'Pegawai' AND $value->status == NULL)
                   <a href="{{ URL('/surat-pengajuan/edit/'. $value->id) }}">
                     <button type="button" class="btn btn-warning">
                     <i class="fa fa-edit"></i>

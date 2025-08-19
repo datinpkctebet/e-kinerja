@@ -67,23 +67,79 @@ class SuratPengajuanController extends Controller
             $list = $this->model->find($id);
         }
 
+        // if ($request->isMethod('post')) {
+        //     $data = $request->all();
+
+        //     if ($id) {
+        //         $insert = $this->model->update($id, $data);
+        //         $message = 'Surat Pengajuan Cuti berhasil diubah.';
+        //     } else {
+        //         $insert = $this->model->create($data);
+        //         $message = 'Surat Pengajuan Cuti berhasil ditambahkan.';
+        //     }
+
+        //     $request->session()->flash('success_message', $message);
+        // }
+
         if ($request->isMethod('post')) {
             $data = $request->all();
 
-            if ($id) {
-                $insert = $this->model->update($id, $data);
-                $message = 'Surat Pengajuan Cuti berhasil diubah.';
-            } else {
-                $insert = $this->model->create($data);
-                $message = 'Surat Pengajuan Cuti berhasil ditambahkan.';
-            }
+            $periode_cuti = $data['periode_cuti'] ?? '';
+            
+            $validator = Validator::make($data, [
+                'jenis' => 'bail|required',
+                'tempat' => 'bail|required',
+                'periode_cuti' => 'bail|required|nullable',
+            ]);
 
-            $request->session()->flash('success_message', $message);
+            $validator->after(function ($validator) use ($data, &$periode_cuti) {
+                if (empty($periode_cuti)) {
+                    $validator->errors()->add('periode_cuti', 'Periode Cuti tidak boleh kosong.');
+                } else {
+                    $explode_periode_cuti = explode("-", $periode_cuti);
+                    if (count($explode_periode_cuti) !== 2) {
+                        $validator->errors()->add('periode_cuti', 'Format Periode Cuti tidak valid. Gunakan format: "dd-mm-yyyy - dd-mm-yyyy".');
+                    }
+                }
+            });
+
+            if ($validator->fails()) {
+                $error_message = $validator->errors()->all()[0];
+            } else {
+                $explode_periode_cuti = explode("-", $periode_cuti);
+
+                $mulai = date_create(trim($explode_periode_cuti[0] ?? ''));
+                $selesai = date_create(trim($explode_periode_cuti[1] ?? ''));
+    
+                $date_mulai = date_format($mulai, "Y-m-d");
+                $date_selesai = date_format($selesai, "Y-m-d");
+
+                $data = [
+                    'jenis' => $data['jenis'],
+                    'tempat' => $data['tempat'],
+                    'mulai' => $date_mulai,
+                    'selesai' => $date_selesai,
+                    'satuan_organisasi' => $data['satuan_organisasi'] ?? '',
+                    'employee_id' => session('employee')['id'],
+                    'status' => NULL, // NULL = belum diproses
+                ];
+
+                if ($id) {
+                    $insert = $this->model->update($id, $data);
+                    $message = 'Pemberian Cuti berhasil diubah.';
+                } else {
+                    $insert = $this->model->create($data);
+                    $message = 'Pemberian Cuti berhasil ditambahkan.';
+                }
+
+                return redirect('/surat-pengajuan')->with('success_message', $message);
+            }
         }
 
         $data = [
             'list' => $list,
             'jenis_cuti' => $this->model->jenisCuti(),
+            'tempat_bekerja' => $this->model->tempatBekerja(),
             'employee' => $this->employee->find(session('employee')['id']),
             'input' => $request->input(),
         ];

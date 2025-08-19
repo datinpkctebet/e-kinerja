@@ -67,5 +67,19 @@ class SuratPengajuanRepository extends AbstractRepository implements SuratPengaj
             'Cuti di Luar Tanggungan Negara',
         ];
     }
+
+    public function tempatBekerja()
+    {
+        return [
+            'Puskesmas Tebet',
+            'Puskesmas Pembantu Bukit Duri',
+            'Puskesmas Pembantu Kebon Baru',
+            'Puskesmas Pembantu Menteng Dalam',
+            'Puskesmas Pembantu Manggarai',
+            'Puskesmas Pembantu Manggarai Selatan',
+            'Puskesmas Pembantu Tebet Barat',
+            'Puskesmas Pembantu Tebet Timur',
+        ];
+    }
 }
 
