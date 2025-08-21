@@ -360,6 +360,19 @@ Route::group(['middleware' => 'member'], function()
         Route::get('setup-form-cuti/edit/{id}', 'SetupFormCutiController@store');
         Route::post('setup-form-cuti/edit/{id}', 'SetupFormCutiController@store');
         Route::get('setup-form-cuti/delete/{id}', 'SetupFormCutiController@destroy');
+
+        /*
+        |--------------------------------------------------------------------------
+        | HOLIDAYS
+        |--------------------------------------------------------------------------
+        */
+        Route::get('holiday', 'HolidayController@index');
+        Route::get('holiday/add', 'HolidayController@store');
+        Route::post('holiday/add', 'HolidayController@store');
+        Route::get('holiday/edit/{id}', 'HolidayController@store');
+        Route::post('holiday/edit/{id}', 'HolidayController@store');
+        Route::get('holiday/delete/{id}', 'HolidayController@destroy');
+        Route::get('holiday/sync', 'HolidayController@sync');
     });
 
 

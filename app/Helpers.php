@@ -108,6 +108,11 @@ if (!function_exists('setMenu'))
                 'url' => 'setup-form-cuti',
                 'icon' => 'flaticon-settings',
             ],
+            [
+                'name' => 'Pengaturan Liburan',
+                'url' => 'holiday',
+                'icon' => 'flaticon-settings',
+            ],
         ];
 
         $employee = [
@@ -495,7 +500,8 @@ if (!function_exists('getListYears'))
     }
 }
 
-if (!function_exists('pretty_dump')) {
+if (!function_exists('pretty_dump')) 
+{
     function pretty_dump($data, $exit = true)
     {
         echo '<pre style="background: #1e1e1e; color: #dcdcdc; padding: 10px; font-size: 14px; line-height: 1.4em; border-radius: 5px;">';
