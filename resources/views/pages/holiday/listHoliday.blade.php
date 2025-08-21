@@ -4,6 +4,34 @@
 
 <div class="kt-container--fluid  kt-grid__item kt-grid__item--fluid">
   <div class="kt-portlet">
+    <div class="kt-portlet__body">
+      <form class="kt-form kt-form--label-right" method="GET" action="{{ URL(setPostUrl()) }}">
+        <div class="form-group row" style="margin:0">
+          @php
+            $yearSelect = (@$input['year']) ? $input['year'] : $current_year;
+          @endphp
+
+          <div class="col-2">
+            <select class="form-control" name="year">
+              @foreach ($years as $value)
+                <option 
+                  value="{{ $value }}" 
+                  @if($value == $yearSelect) selected @endif
+                >{{ $value }}</option>
+              @endforeach
+            </select>
+          </div>
+
+          <div class="col-2">
+            <button type="submit" class="btn btn-block btn-primary">
+              <i class="fa fa-search"></i> Cari
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="kt-portlet">
     <div class="kt-portlet__head">
       <div class="kt-portlet__head-label">
         <h3 class="kt-portlet__head-title">
@@ -14,9 +42,12 @@
         <a href="{{ URL('/holiday/add') }}">
           <button type="button" class="btn btn-primary btn-wide"><i class="fa fa-plus"></i> Tambah Liburan</button>
         </a>
-        <a href="{{ URL('/holiday/sync') }}">
-          <button type="button" class="btn btn-success btn-wide"><i class="fa fa-sync"></i> Sync Liburan</button>
-        </a>
+        <form action="{{ url('/holiday/sync') }}" method="POST" style="display:inline;">
+          @csrf
+          <button type="submit" class="btn btn-success btn-wide">
+              <i class="fa fa-sync"></i> Sync Liburan
+          </button>
+        </form>
       </div>
     </div>
     <div class="kt-portlet__body">

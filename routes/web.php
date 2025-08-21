@@ -372,7 +372,7 @@ Route::group(['middleware' => 'member'], function()
         Route::get('holiday/edit/{id}', 'HolidayController@store');
         Route::post('holiday/edit/{id}', 'HolidayController@store');
         Route::get('holiday/delete/{id}', 'HolidayController@destroy');
-        Route::get('holiday/sync', 'HolidayController@sync');
+        Route::post('holiday/sync', 'HolidayController@sync');
     });
 
 

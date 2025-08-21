@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 
+use App\Models\Holiday;
 use App\Repositories\HolidayRepository;
 
 class HolidayController extends Controller
@@ -16,11 +17,25 @@ class HolidayController extends Controller
         $this->model = $holiday;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $now = Carbon::now();
+        $current_year = $now->year;
+        $year = $request->input('year') ?? $current_year;
+
+        $holidays = Holiday::select('holidays.id', 'holidays.date', 'holidays.description')
+            ->orderBy('holidays.date', 'ASC');
+
+        if (!empty($year)) {
+            $holidays->whereYear('holidays.date', $year);
+        }
+
         // Get all holidays
         $data = [
-            'list' => $this->model->get(),
+            'list' => $holidays->get(),
+            'input' => $request->input(),
+            'years' => getListYears(),
+            'current_year' => $current_year,
         ];
 
         return view('pages.holiday.listHoliday', $data);
@@ -80,8 +95,16 @@ class HolidayController extends Controller
 
     public function sync()
     {
-        $this->model->sync();
-
-        return redirect('/holiday')->with('success_message', 'Liburan berhasil disinkronisasi.');
+        try {
+            $this->model->sync();
+            return redirect('/holiday')->with('success_message', 'Sinkronisasi telah berhasil');
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'line'  => $e->getLine(),
+                'file'  => $e->getFile(),
+            ], 500);
+            // return redirect('/holiday')->with('error_message', $e->getMessage());
+        }
     }
 }
