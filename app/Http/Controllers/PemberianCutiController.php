@@ -11,18 +11,21 @@ use Illuminate\Http\Response;
 use App\Repositories\SuratPengajuanRepository;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\SetupRepository;
+use App\Repositories\HolidayRepository;
 
 class PemberianCutiController extends Controller
 {
     public function __construct(
         SuratPengajuanRepository $surat_pengajuan,
         EmployeeRepository $employee,
-        SetupRepository $setup
+        SetupRepository $setup,
+        HolidayRepository $holiday
     )
     {
         $this->surat_pengajuan = $surat_pengajuan;
         $this->employee = $employee;
         $this->setup = $setup;
+        $this->holiday = $holiday;
     }
 
     /**
@@ -96,10 +99,15 @@ class PemberianCutiController extends Controller
             }
         }
 
-        $cacheTime = 3600 * +env('CACHE_TIME', 24);
+        // $cacheTime = 3600 * +env('CACHE_TIME', 24);
         // $employee = \Cache::remember('employee-select', $cacheTime, function () {
         //     return $this->employee->getEmployeeSelect();
         // });
+
+        // Jika hanya GET (menampilkan form) & sudah ada list
+        if ($list && $list->mulai && $list->selesai) {
+            $jumlahCuti = $this->hitungCuti($list->mulai, $list->selesai);
+        }
 
         $employee = $this->employee->getEmployeeSelect();
 
@@ -112,6 +120,7 @@ class PemberianCutiController extends Controller
             'pejabat_berwenang' => $this->setup->getByType('Pejabat Berwenang'),
             'input' => $request->input(),
             'error_message' => $error_message,
+            'jumlah_cuti' => $jumlahCuti,
 
         ];
 
@@ -176,5 +185,37 @@ class PemberianCutiController extends Controller
         // return view('pages.pemberian-cuti.exportPemberianCuti', $data);
         return $pdf->stream($name);
         // return $pdf->download($name);
+    }
+
+    public function hitungCuti($mulai, $selesai)
+    {
+        $start = new \DateTime($mulai);
+        $end   = new \DateTime($selesai);
+
+        $holidays = \DB::table('holidays')
+            ->whereBetween('date', [$start->format('Y-m-d'), $end->format('Y-m-d')])
+            ->where('deleted_at', NULL)
+            ->pluck('date')
+            ->toArray();
+
+        $jumlahCuti = 0;
+        $period = new \DatePeriod($start, new \DateInterval('P1D'), $end->modify('+1 day'));
+
+        foreach ($period as $date) {
+            $day = $date->format('N'); // 6=Sabtu, 7=Minggu
+            $ymd = $date->format('Y-m-d');
+
+            if ($day >= 6) {
+                continue; // skip sabtu minggu
+            }
+
+            if (in_array($ymd, $holidays)) {
+                continue; // skip hari libur nasional
+            }
+
+            $jumlahCuti++;
+        }
+
+        return $jumlahCuti;
     }
 }

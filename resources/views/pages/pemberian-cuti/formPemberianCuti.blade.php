@@ -77,7 +77,11 @@
       @if ($list['jenis'] === 'Cuti Tahunan')
       <div class="form-group row">
         <label class="col-3 col-form-label">Jumlah Cuti yang diambil</label>
-        <div class="col-9">
+        @if (isset($jumlah_cuti))
+          <input class="form-control col-3" type="number" name="cuti" value="{{ $jumlah_cuti }}" hidden>
+          <label class="col-9 font-weight-bold text-left col-form-label">{{ $jumlah_cuti }}</label>
+        @endif
+        <!-- <div class="col-9">
           <input
             class="form-control"
             type="number"
@@ -85,7 +89,7 @@
             value="{{ @$list['cuti'] }}"
             min="0"
             max="{{ @$employee->total_cuti }}">
-        </div>
+        </div> -->
       </div>
       @endif
 
