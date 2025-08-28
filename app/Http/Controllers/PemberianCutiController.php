@@ -139,10 +139,15 @@ class PemberianCutiController extends Controller
 
         $employee = $this->employee->find($surat_pengajuan->employee_id);
 
-        $total_cuti = (int) $employee->total_cuti - (int) $surat_pengajuan->cuti;
+        // Hitung total cuti
+        if ($employee->total_penangguhan_cuti == NULL || $employee->total_penangguhan_cuti == 0) { // jika tidak ada saldo penangguhan cuti
+            $total_cuti = (int) $employee->total_cuti - (int) $surat_pengajuan->cuti;
+        } else { // jika ada saldo penangguhan cuti
+            $total_cuti = (int) $employee->total_penangguhan_cuti - (int) $surat_pengajuan->cuti;
+        }
 
-        if ($total_cuti < 0) {
-            $message = 'Maaf sisa cuti anda tidak mencukupi';
+        if ($total_cuti < -12) {
+            $message = 'Maaf hutang cuti anda tidak boleh lebih dari 12 hari';
 
             return \Response::json(array(
                 'code'      =>  401,
@@ -156,10 +161,16 @@ class PemberianCutiController extends Controller
         ];
         $this->surat_pengajuan->update($id, $pengajuan);
 
-        // UPADTE EMPLOYEE DATA
-        $data = [
-            'total_cuti' => $total_cuti,
-        ];
+        // UPDATE EMPLOYEE DATA
+        if ($employee->total_penangguhan_cuti == NULL || $employee->total_penangguhan_cuti == 0) { // jika tidak ada saldo penangguhan cuti, update saldo cuti tahunan
+            $data = [
+                'total_cuti' => $total_cuti,
+            ];
+        } else { // jika ada saldo penangguhan cuti, update saldo penangguhan cuti
+            $data = [
+                'total_penangguhan_cuti' => $total_cuti,
+            ];
+        }
         $this->employee->update($employee->id, $data);
 
         return \Response::json();

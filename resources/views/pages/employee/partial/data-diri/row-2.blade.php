@@ -91,8 +91,15 @@
 </div>
 
 <div class="form-group form-group-xs row">
-  <label class="col-6 col-form-label">Total Cuti:</label>
+  <label class="col-6 col-form-label">Total Cuti Tahun ini:</label>
   <div class="col-6">
     <span class="form-control-plaintext kt-font-bolder">{{ $data->total_cuti }}</span>
+  </div>
+</div>
+
+<div class="form-group form-group-xs row">
+  <label class="col-6 col-form-label">Total Penangguhan Cuti:</label>
+  <div class="col-6">
+    <span class="form-control-plaintext kt-font-bolder">{{ $data->total_penangguhan_cuti }}</span>
   </div>
 </div>

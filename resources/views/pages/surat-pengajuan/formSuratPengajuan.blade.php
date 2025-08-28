@@ -117,9 +117,14 @@
 
   <script type="text/javascript">
     $(function() {
+      var year = new Date().getFullYear(); // tahun sekarang
+      var startOfYear = moment(year + "-01-01", "YYYY-MM-DD"); 
+      var endOfYear   = moment(year + "-12-31", "YYYY-MM-DD"); 
 
       $('input[name="periode_cuti"]').daterangepicker({
           autoUpdateInput: false,
+          minDate: startOfYear,
+          maxDate: endOfYear,
           locale: {
               cancelLabel: 'Clear'
           }

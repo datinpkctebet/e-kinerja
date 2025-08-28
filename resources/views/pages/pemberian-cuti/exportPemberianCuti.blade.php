@@ -141,7 +141,7 @@
     <td> @if($list->jenis === 'Cuti Sakit') <span style="font-family: DejaVu Sans; sans-serif;">&#10004;</span> @endif </td>
   </tr>
   <tr>
-    <td class="text-center">{{ getYear($list->header_date) }}</td>
+    <td class="text-center" rowspan="2">{{ getYear($list->header_date) }}</td>
     <td class="text-center">{{ $employee->total_cuti  }}</td>
     <td class="w-25 text-center">{{ $list->jenis }}</td>
 
@@ -149,9 +149,9 @@
     <td> @if($list->jenis === 'Cuti Melahirkan') <span style="font-family: DejaVu Sans; sans-serif;">&#10004;</span> @endif </td>
   </tr>
   <tr>
-    <td class="text-center"></td>
-    <td class="text-center"></td>
-    <td class="w-25 text-center"></td>
+    <!-- <td class="text-center">{{ getYear($list->header_date) }}</td> -->
+    <td class="text-center">{{ $employee->total_penangguhan_cuti == NULL ? 0 : $employee->total_penangguhan_cuti }}</td>
+    <td class="w-25 text-center">Penangguhan Cuti</td>
 
     <td style="width:40%">5. Cuti Karena Alasan Penting</td>
     <td> @if($list->jenis === 'Cuti Karena Alasan Penting') <span style="font-family: DejaVu Sans; sans-serif;">&#10004;</span> @endif </td>

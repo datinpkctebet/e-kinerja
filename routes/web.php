@@ -373,6 +373,20 @@ Route::group(['middleware' => 'member'], function()
         Route::post('holiday/edit/{id}', 'HolidayController@store');
         Route::get('holiday/delete/{id}', 'HolidayController@destroy');
         Route::post('holiday/sync', 'HolidayController@sync');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Penangguhan Cuti
+        |--------------------------------------------------------------------------
+        */
+        Route::get('penangguhan-cuti', 'PenangguhanCutiController@index');
+        Route::get('penangguhan-cuti/add', 'PenangguhanCutiController@store');
+        Route::post('penangguhan-cuti/add', 'PenangguhanCutiController@store');
+        Route::get('penangguhan-cuti/edit/{id}', 'PenangguhanCutiController@store');
+        Route::post('penangguhan-cuti/edit/{id}', 'PenangguhanCutiController@store');
+        Route::get('penangguhan-cuti/delete/{id}', 'PenangguhanCutiController@destroy');
+        Route::post('penangguhan-cuti/sync', 'PenangguhanCutiController@sync');
+        Route::post('penangguhan-cuti/update-status', 'PenangguhanCutiController@updateStatus');
     });
 
 

@@ -113,6 +113,11 @@ if (!function_exists('setMenu'))
                 'url' => 'holiday',
                 'icon' => 'flaticon-settings',
             ],
+            [
+                'name' => 'Pengaturan Penangguhan Cuti',
+                'url' => 'penangguhan-cuti',
+                'icon' => 'flaticon-settings',
+            ],
         ];
 
         $employee = [
