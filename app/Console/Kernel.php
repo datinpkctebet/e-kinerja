@@ -26,6 +26,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        // Jalan tiap 1 Januari jam 00:00
+        $schedule->command('cuti:reset-tahunan')->cron('0 0 1 1 *');
+
+        // cek reset tiap hari jam 00:00
+        $schedule->command('cuti:reset-penangguhan')->dailyAt('00:00');
     }
 
     /**

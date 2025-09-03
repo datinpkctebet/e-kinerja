@@ -21,7 +21,7 @@
               <tr>
                 <th class="text-center">Nama Pegawai</th>
                 <th class="text-center">Jenis Surat</th>
-                <th class="text-center">Tempat Bekarja</th>
+                <th class="text-center">Tempat Bekerja</th>
                 <th class="text-center">Tanggal Mulai</th>
                 <th class="text-center">Tanggal Selesai</th>
 

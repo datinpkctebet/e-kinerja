@@ -106,7 +106,17 @@ class PemberianCutiController extends Controller
 
         // Jika hanya GET (menampilkan form) & sudah ada list
         if ($list && $list->mulai && $list->selesai) {
-            $jumlahCuti = $this->hitungCuti($list->mulai, $list->selesai);
+            $employee = $this->employee->find($list->employee_id);
+            
+            // pecah unit kerja menjadi array
+            $unitKerja = explode(',', $employee->unit_kerja);
+
+            if (in_array('12', $unitKerja)) {
+                // jika ada 12 di unit kerja → layanan 24 jam
+                $jumlahCuti = $this->hitungCuti($list->mulai, $list->selesai, true);
+            } else {
+                $jumlahCuti = $this->hitungCuti($list->mulai, $list->selesai);
+            }
         }
 
         $employee = $this->employee->getEmployeeSelect();
@@ -198,33 +208,42 @@ class PemberianCutiController extends Controller
         // return $pdf->download($name);
     }
 
-    public function hitungCuti($mulai, $selesai)
+    public function hitungCuti($mulai, $selesai, $layanan24jam = false)
     {
         $start = new \DateTime($mulai);
         $end   = new \DateTime($selesai);
 
-        $holidays = \DB::table('holidays')
-            ->whereBetween('date', [$start->format('Y-m-d'), $end->format('Y-m-d')])
-            ->where('deleted_at', NULL)
-            ->pluck('date')
-            ->toArray();
-
+        // Jika layanan 24 jam, cuti dihitung tanpa libur nasional dan sabtu minggu
         $jumlahCuti = 0;
-        $period = new \DatePeriod($start, new \DateInterval('P1D'), $end->modify('+1 day'));
-
-        foreach ($period as $date) {
-            $day = $date->format('N'); // 6=Sabtu, 7=Minggu
-            $ymd = $date->format('Y-m-d');
-
-            if ($day >= 6) {
-                continue; // skip sabtu minggu
+        if ($layanan24jam) {
+            $period = new \DatePeriod($start, new \DateInterval('P1D'), $end->modify('+1 day'));
+    
+            foreach ($period as $date) {    
+                $jumlahCuti++;
             }
-
-            if (in_array($ymd, $holidays)) {
-                continue; // skip hari libur nasional
+        } else {
+            $holidays = \DB::table('holidays')
+                ->whereBetween('date', [$start->format('Y-m-d'), $end->format('Y-m-d')])
+                ->where('deleted_at', NULL)
+                ->pluck('date')
+                ->toArray();
+    
+            $period = new \DatePeriod($start, new \DateInterval('P1D'), $end->modify('+1 day'));
+    
+            foreach ($period as $date) {
+                $day = $date->format('N'); // 6=Sabtu, 7=Minggu
+                $ymd = $date->format('Y-m-d');
+    
+                if ($day >= 6) {
+                    continue; // skip sabtu minggu
+                }
+    
+                if (in_array($ymd, $holidays)) {
+                    continue; // skip hari libur nasional
+                }
+    
+                $jumlahCuti++;
             }
-
-            $jumlahCuti++;
         }
 
         return $jumlahCuti;

@@ -117,28 +117,28 @@
 
   <script type="text/javascript">
     $(function() {
-      var year = new Date().getFullYear(); // tahun sekarang
-      var startOfYear = moment(year + "-01-01", "YYYY-MM-DD"); 
-      var endOfYear   = moment(year + "-12-31", "YYYY-MM-DD"); 
+        var year = new Date().getFullYear(); // tahun sekarang
+        var startOfYear = moment(year + "-01-01", "YYYY-MM-DD"); 
+        var endOfNextJanuary = moment((year + 1) + "-01-31", "YYYY-MM-DD"); // 31 Januari tahun berikutnya
 
-      $('input[name="periode_cuti"]').daterangepicker({
-          autoUpdateInput: false,
-          minDate: startOfYear,
-          maxDate: endOfYear,
-          locale: {
-              cancelLabel: 'Clear'
-          }
-      });
+        $('input[name="periode_cuti"]').daterangepicker({
+            autoUpdateInput: false,
+            minDate: startOfYear,
+            maxDate: endOfNextJanuary,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
 
-      $('input[name="periode_cuti"]').on('apply.daterangepicker', function(ev, picker) {
-          $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-      });
+        $('input[name="periode_cuti"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
 
-      $('input[name="periode_cuti"]').on('cancel.daterangepicker', function(ev, picker) {
-          $(this).val('');
-      });
-
+        $('input[name="periode_cuti"]').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
     });
+
   </script>
 
   <!-- <form-surat-pengajuan

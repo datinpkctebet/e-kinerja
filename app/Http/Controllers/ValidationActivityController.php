@@ -32,7 +32,7 @@ class ValidationActivityController extends Controller
         $param = [
             'perpage' => 15,
             'privilege' => 'Pegawai',
-            'unit_kerja' => session('employee')['unit_kerja'],
+            'unit_kerja_like' => session('employee')['unit_kerja'],
             'month' => $request->input('month') ?? $now->month,
             'year' => $request->input('year') ?? $now->year,
             'table' => 'activities',

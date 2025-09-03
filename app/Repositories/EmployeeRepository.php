@@ -27,6 +27,7 @@ class EmployeeRepository extends AbstractRepository implements EmployeeInterface
         $perpage = $param['perpage'] ?? 10;
         $search = $param['search'] ?? '';
         $unit_kerja = $param['unit_kerja'] ?? '';
+        $unit_kerja_like = $param['unit_kerja_like'] ?? '';
         $privilege = $param['privilege'] ?? '';
         $month = $param['month'] ?? '';
         $year = $param['year'] ?? '';
@@ -42,6 +43,10 @@ class EmployeeRepository extends AbstractRepository implements EmployeeInterface
 
         if (!empty($unit_kerja)) {
             $data->where('unit_kerja', $unit_kerja);
+        }
+
+        if (!empty($unit_kerja_like)) {
+            $data->where('unit_kerja', 'like', '%'. $unit_kerja_like .'%');
         }
 
         if (!empty($privilege)) {
