@@ -8,7 +8,7 @@
   <div class="kt-portlet">
     <div class="kt-portlet__body">
 
-      <form class="kt-form kt-form--label-right" method="GET" action="{{ URL('/activity') }}">
+      <form class="kt-form kt-form--label-right" method="GET" action="{{ URL('/validation') }}">
         <div class="form-group row" style="margin:0">
           @php
             $monthSelect = (@$input['month']) ? $input['month'] : $now->month;
