@@ -10,6 +10,11 @@ use App\Repositories\AbsensiRepository;
 use App\Repositories\EmployeeRepository;
 use App\Repositories\ActivityRepository;
 
+// import dan export
+use App\Imports\AbsensiImport;
+use App\Exports\AbsensiExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class AbsensiController extends Controller
 {
@@ -133,5 +138,22 @@ class AbsensiController extends Controller
         $this->model->destroy($id);
 
         return \Response::json();
+    }
+
+    public function downloadTemplate()
+    {
+        $fileName = 'Template_Import_Absensi.xlsx';
+        return Excel::download(new AbsensiExport, $fileName);
+    }
+
+    public function import(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:xls,xlsx,csv'
+        ]);
+
+        Excel::import(new AbsensiImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data absensi berhasil diimport!');
     }
 }

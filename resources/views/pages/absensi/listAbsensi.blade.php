@@ -50,8 +50,12 @@
         </h3>
       </div>
       <div class="mt-2">
+        <a href="{{ route('absensi.download') }}">
+          <button type="button" class="btn btn-warning btn-wide"><i class="fa fa-download"></i> Template Import</button>
+        </a>
+        <button type="button" class="btn btn-success btn-wide" data-toggle="modal" data-target="#importModal"><i class="fa fa-file-import"></i> Import</button>
         <a href="{{ route('absensi.add', ['month' => $monthSelect, 'year' => $yearSelect]) }}">
-          <button type="button" class="btn btn-primary btn-wide">Tambah Absensi</button>
+          <button type="button" class="btn btn-primary btn-wide"><i class="fa fa-plus"></i> Tambah</button>
         </a>
       </div>
     </div>
@@ -110,6 +114,30 @@
         {{ $list->links() }}
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- Modal Import-->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form action="{{ route('absensi.import.post') }}" method="POST" enctype="multipart/form-data">
+          {{ csrf_field() }}
+          <div class="modal-header">
+            <h5 class="modal-title" id="importModalLabel">Upload File Import</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="file" name="file" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Import</button>
+          </div>
+      </form>
     </div>
   </div>
 </div>

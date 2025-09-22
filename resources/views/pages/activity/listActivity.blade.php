@@ -8,7 +8,13 @@
   <div class="kt-portlet">
     <div class="kt-portlet__body">
 
+      @if (@$isKapuskes)
       <form class="kt-form kt-form--label-right" method="GET" action="{{ URL('/validation') }}">
+      @endif
+      
+      @if (session('employee')['privilege'] === 'Pegawai')
+      <form class="kt-form kt-form--label-right" method="GET" action="{{ URL('/activity') }}">
+      @endif
         <div class="form-group row" style="margin:0">
           @php
             $monthSelect = (@$input['month']) ? $input['month'] : $now->month;
