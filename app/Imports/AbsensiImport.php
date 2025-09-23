@@ -33,16 +33,16 @@ class AbsensiImport implements ToModel, WithHeadingRow
         // tentukan nilai date
         if (function_exists('minusMonth')) {
             // gunakan helper jika ada
-            $dateValue = minusMonth()->toDateString();
+            $dateValue = minusMonth();
         } else {
             // fallback ke Carbon: gunakan tanggal 1 bulan lalu (ubah sesuai kebutuhan)
-            $dateValue = Carbon::now()->subMonth()->startOfMonth()->toDateString();
+            $dateValue = Carbon::now()->subMonth()->startOfMonth();
         }
 
         // Data yang akan di-save / update
         $data = [
             'employee_id'  => $employee->id,
-            'date'         => $dateValue,
+            'date'         => $dateValue->toDateString(),
             'hari_kerja'   => (int) $row['hari_kerja'] ?? 0,
             'telat'        => (int) $row['telat'] ?? 0,
             'pulang_cepat' => (int) $row['pulang_cepat'] ?? 0,
@@ -52,7 +52,7 @@ class AbsensiImport implements ToModel, WithHeadingRow
         ];
 
         // cari absensi berdasarkan employee_id + date
-        $absensi = Absensi::where('employee_id', $employee->id)->where('date', $dateValue)->first();
+        $absensi = Absensi::where('employee_id', $employee->id)->where('date', 'like', $dateValue->format('Y-m') . '%')->first();
 
         if ($absensi) {
             // Kalau ada → update dan return null (agar importer TIDAK mencoba insert lagi)
