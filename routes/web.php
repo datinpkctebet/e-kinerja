@@ -214,6 +214,7 @@ Route::group(['middleware' => 'member'], function()
         |--------------------------------------------------------------------------
         */
         Route::get('nilai-tkd', 'NilaiTkdController@index');
+        Route::get('nilai-tkd/export/{year}/{month}', 'NilaiTkdController@export');
     });
 
 

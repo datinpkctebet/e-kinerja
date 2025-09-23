@@ -49,7 +49,9 @@
         </h3>
       </div>
       <div class="mt-2">
-        {{-- <button type="button" class="btn btn-primary btn-wide"></button> --}}
+        <a href="{{ URL('/nilai-tkd/export/'. $year_now .'/'. $month_now) }}">
+          <button type="button" class="btn btn-success btn-wide"><i class="fa fa-file-export"></i> Export</button>
+        </a>
       </div>
     </div>
     <div class="kt-portlet__body">
