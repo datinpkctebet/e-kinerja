@@ -10,7 +10,7 @@
         <div class="form-group row" style="margin:0">
           @php
             $yearSelect = (@$input['year']) ? $input['year'] : $current_year;
-            $jabatanSelect = (@$input['jabatan']) ? $input['jabatan'] : '';
+            $jabatanSelect = (@$input['jabatan']) ? $input['jabatan'] : 0;
           @endphp
 
           <div class="col-2">
@@ -54,6 +54,11 @@
         <h3 class="kt-portlet__head-title">
           Daftar Diklat Employee
         </h3>
+      </div>
+      <div class="mt-2">
+        <a href="{{ URL('/employee-diklat/export/'. $yearSelect .'/'. $jabatanSelect) }}">
+          <button type="button" class="btn btn-success btn-wide"><i class="fa fa-file-export"></i> Export</button>
+        </a>
       </div>
     </div>
     <div class="kt-portlet__body">

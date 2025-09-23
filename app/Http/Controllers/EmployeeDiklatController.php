@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Carbon\Carbon;
 use Validator;
 use App\Models\Employee;
@@ -11,6 +12,10 @@ use App\Repositories\ProfessionRepository;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+
+// export
+use App\Exports\EmployeeDiklatExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeDiklatController extends Controller
 {
@@ -306,5 +311,32 @@ class EmployeeDiklatController extends Controller
         } catch (\Exception $e) {
             return redirect('/diklat')->with('error_message', 'Terjadi kesalahan saat menghapus diklat: ' . $e->getMessage());
         }
+    }
+
+    public function export($year, $jabatan)
+    {
+        // validasi year dan jabatan
+        if(!is_numeric($year) || (!is_numeric($jabatan))) {
+            return redirect('/employee-diklat')->with('error', 'Data tidak valid');
+        }
+
+        $jabatan = (int) $jabatan == 0 ? '' : (int) $jabatan;
+
+        $now = Carbon::now();
+
+        $param = [
+            'year' => $year ?? $now->year,
+            'jabatan' => $jabatan,
+            'per_page' => 99999, // ambil semua data tanpa pagination
+        ];
+        
+        // ambil nama jabatan dari tabel
+        $jabatanName = DB::table('professions')->where('id', $jabatan)->value('name'); // sesuaikan kolom, bisa 'nama_jabatan'
+        $jabatanName = $jabatanName ? $jabatanName : 'All';
+
+        // export to excel
+        // contoh: "Diklat-Pegawai-Dokter-2025.xlsx"
+        $fileName = 'Diklat-Pegawai-' . $jabatanName . '-' . $year . '.xlsx';
+        return Excel::download(new EmployeeDiklatExport($param), $fileName);
     }
 }

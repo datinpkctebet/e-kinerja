@@ -259,6 +259,7 @@ Route::group(['middleware' => 'member'], function()
         */
         Route::get('employee-diklat', 'EmployeeDiklatController@employee');
         Route::get('employee-diklat/{id}', 'EmployeeDiklatController@diklatByEmployee');
+        Route::get('employee-diklat/export/{year}/{jabatan}', 'EmployeeDiklatController@export');
 
         /*
         |--------------------------------------------------------------------------

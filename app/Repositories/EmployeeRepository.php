@@ -440,4 +440,41 @@ class EmployeeRepository extends AbstractRepository implements EmployeeInterface
 
         return $data;
     }
+
+    public function getListDiklat(array $param)
+    {
+        $per_page = $param['per_page'] ?? 10;
+        $jabatan = $param['jabatan'] ?? '';
+        $year = $param['year'] ?? '';
+
+        $employees = Employee::select('employees.id', 'employees.nip', 'employees.name', 'employees.jabatan')
+            ->leftJoin('employee_diklats', 'employees.id', '=', 'employee_diklats.employee_id')
+            ->selectRaw('employees.id, SUM(employee_diklats.jpl_diklat) as total')
+            ->groupBy('employees.id', 'employees.nip', 'employees.name', 'employees.jabatan')
+            ->orderBy('total', 'DESC');
+
+        if (!empty($year)) {
+            $employees->whereYear('employee_diklats.tanggal_mulai', $year);
+        }
+
+        if (!empty($jabatan)) {
+            $employees->whereIn('jabatan', [(int)$jabatan]);
+        }
+
+        $employees = $employees->paginate($per_page);
+
+        if (!empty($year)) {
+            $employees->appends([
+                'year' => $year,
+            ]);
+        }
+        
+        if (!empty($jabatan)) {
+            $employees->appends([
+                'jabatan' => $jabatan,
+            ]);
+        }
+
+        return $employees;
+    }
 }
