@@ -15,7 +15,8 @@ class AbsensiExport implements FromCollection, WithHeadings
         return DB::table('employees')
             ->where('active', 1)
             ->where('privilege', 'Pegawai')
-            ->select('id', 'name')
+            ->select('id', DB::raw('UPPER(name) as name'))
+            ->orderBy('name', 'asc')
             ->get();
     }
 
