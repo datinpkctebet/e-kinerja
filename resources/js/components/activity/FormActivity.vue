@@ -158,7 +158,7 @@ export default {
       isDisabled: false,
 
       disabledDate: {
-        to: moment().startOf('month')._d,
+        to: moment().subtract(1, "month").startOf("month").toDate(),
         from: moment().add(1, "month").date(6).startOf("day").toDate(),
       },
 
