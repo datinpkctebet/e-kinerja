@@ -71,6 +71,20 @@ class ActivityController extends Controller
         }
 
         if ($request->isMethod('post')) {
+            $inputDate = Carbon::parse($request->input('date'));
+            $now = Carbon::now();
+
+            // CEK: apakah tanggal input adalah bulan sebelumnya?
+            if ($inputDate->isSameMonth($now->copy()->subMonth())) {
+                // jika iya, pastikan hari ini tidak lebih dari tanggal 5 bulan ini
+                if ($now->day > 5) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Batas input untuk bulan sebelumnya hanya sampai tanggal 5 bulan ini.'
+                    ], 422);
+                }
+            }
+            
             $validator = Validator::make($request->all(), [
                 'date' => 'bail|required',
                 'name' => 'bail|required',

@@ -376,10 +376,11 @@ export default {
       return new Promise((resolve) => {
         this.axios.post(this.updateUrl, data)
         .then(() => {
-            resolve();
+          resolve(true);
         })
         .catch((error) => {
           console.log('update error', error);
+          resolve(false);
         });
       });
     },
@@ -395,8 +396,26 @@ export default {
       const isValid = await this.checkVol();
       if (isValid) {
         const data = await this.generateData();
-        await this.update(data);
-        window.location.href = '/activity';
+        const result = await this.update(data);
+        if (result) {
+          swal.fire(
+            'Berhasil',
+            'Data Aktifitas Berhasil disimpan!',
+            'success'
+          ).then(() => {
+            window.location.href = '/activity';
+          });
+        } else {
+          swal.fire(
+            'Gagal',
+            'Batas input untuk bulan sebelumnya hanya sampai tanggal 5 bulan ini.',
+            'error'
+          ).then(() => {
+            this.isLoading = false;
+            this.isDisabled = false;
+            window.location.href = '/add/activity';
+          });
+        }
       } else {
         this.alertInvalidVol();
         this.isLoading = false;
