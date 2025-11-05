@@ -15,6 +15,9 @@ Route::get('/health-check', function() {
     return 'your system running well ^_^';
 });
 
+Route::get('/check-employee', 'EmployeeController@idCard');
+Route::post('/check-employee', 'EmployeeController@idCard');
+
 /*
 |--------------------------------------------------------------------------
 | LOGIN

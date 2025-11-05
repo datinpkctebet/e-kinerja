@@ -397,4 +397,33 @@ class EmployeeController extends Controller
 
         return view('pages.employee.nilaiEmployee', $data);
     }
+
+    public function idCard(Request $request)
+    {
+        $error_message = false;
+
+        if ($request->isMethod('post')) {
+            if (empty($request->input('nip'))) {
+                $error_message = 'NIP tidak boleh kosong.';
+            } else {
+                $employee = $this->model->getFirst($request->input('nip'));
+                if (empty($employee)) {
+                    $error_message = "Pegawai dengan NIP ". $request->input('nip') ." tidak ditemukan.";
+                } else {
+                    $data = [
+                        'data' => $employee,
+                    ];
+    
+                    return view('pages.employee.idCardEmployeeResult', $data);
+                }
+            }
+        }
+        
+        $data = [
+            'error_message' => $error_message,
+            'input' => $request->input(),
+        ];
+
+        return view('pages.employee.idCardEmployee', $data);
+    }
 }
