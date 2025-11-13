@@ -35,6 +35,9 @@
 <link href="{{ asset('vendors/custom/vendors/flaticon2/flaticon.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
 
+<!-- Handsontable CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@14.3.0/dist/handsontable.min.css">
+
 <!--begin::Global Theme Styles(used by all pages) -->
 <link href="{{ asset('css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 

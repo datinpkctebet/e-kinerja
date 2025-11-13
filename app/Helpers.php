@@ -202,6 +202,11 @@ if (!function_exists('setMenu'))
                 'url' => 'absensi',
                 'icon' => 'flaticon-alert',
             ],
+            // [
+            //     'name' => 'Absensi Pegawai (NEW)',
+            //     'url' => 'absensi/new',
+            //     'icon' => 'flaticon-alert',
+            // ],
         ];
 
         $writer = [

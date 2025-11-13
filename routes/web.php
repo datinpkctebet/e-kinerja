@@ -235,6 +235,9 @@ Route::group(['middleware' => 'member'], function()
         Route::get('absensi/delete/{id}', 'AbsensiController@destroy');
         Route::get('absensi/download', 'AbsensiController@downloadTemplate')->name('absensi.download');
         Route::post('absensi/import', 'AbsensiController@import')->name('absensi.import.post');
+        Route::get('absensi/new', 'AbsensiController@newIndex');
+        Route::get('absensi/load', 'AbsensiController@loadData');
+        Route::post('absensi/save', 'AbsensiController@saveData');
     });
 
 
