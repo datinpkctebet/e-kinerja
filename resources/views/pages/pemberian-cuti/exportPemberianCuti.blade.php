@@ -104,7 +104,7 @@
   </tr>
   <tr>
     <td class="text-center">Selama</td>
-    <td class="text-center">{{ $list->selama }}</td>
+    <td class="text-center">{{ $jumlah_cuti }}</td>
     <td class="text-center">Mulai Tanggal</td>
     <td class="text-center">{{ $list->mulai }}</td>
     <td class="text-center">s/d</td>

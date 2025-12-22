@@ -195,9 +195,24 @@ class PemberianCutiController extends Controller
     {
         $list = $this->surat_pengajuan->find($id);
 
+        if ($list && $list->mulai && $list->selesai) {
+            $employee = $this->employee->find($list->employee_id);
+            
+            // pecah unit kerja menjadi array
+            $unitKerja = explode(',', $employee->unit_kerja);
+
+            if (in_array('12', $unitKerja)) {
+                // jika ada 12 di unit kerja → layanan 24 jam
+                $jumlahCuti = $this->hitungCuti($list->mulai, $list->selesai, true);
+            } else {
+                $jumlahCuti = $this->hitungCuti($list->mulai, $list->selesai);
+            }
+        }
+
         $data = [
             'list' => $list,
             'employee' => $this->employee->find($list->employee_id),
+            'jumlah_cuti' => "0 Bulan $jumlahCuti Hari",
         ];
 
         $name = $data['employee']['nip'] .' '. $data['employee']['name'] .' '. $data['list']['jenis'] .'.pdf';
