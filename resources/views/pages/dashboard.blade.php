@@ -188,8 +188,25 @@
             type: 'GET',
             dataType: 'json',
             success: function(response) {
-                allData = response;
-                filteredData = response;
+                // Handle different response formats
+                let data = [];
+                
+                if (Array.isArray(response)) {
+                    // Response is already an array
+                    data = response;
+                } else if (response.data && Array.isArray(response.data)) {
+                    // Response has data property (Laravel pagination format)
+                    data = response.data;
+                } else if (response.schedules && Array.isArray(response.schedules)) {
+                    // Custom property name
+                    data = response.schedules;
+                } else {
+                    console.error('Unexpected response format:', response);
+                    data = [];
+                }
+                
+                allData = data;
+                filteredData = data;
                 
                 generateTableHeaders();
                 renderTable();
@@ -208,17 +225,24 @@
                 });
 
                 Toast.fire({
-                    type: 'success',
-                    title: 'Data berhasil dimuat'
+                    icon: 'success',
+                    title: `Data berhasil dimuat (${data.length} data)`
                 });
             },
             error: function(xhr, status, error) {
                 $('#loading').hide();
                 
+                let errorMessage = 'Gagal memuat data!';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                } else if (error) {
+                    errorMessage += ' ' + error;
+                }
+                
                 Swal.fire({
-                    type: 'error',
+                    icon: 'error',
                     title: 'Oops...',
-                    text: 'Gagal memuat data! ' + error,
+                    text: errorMessage,
                     confirmButtonColor: '#667eea'
                 });
             }
@@ -231,7 +255,7 @@
         
         if (!schedule) {
             Swal.fire({
-                type: 'error',
+                icon: 'error',
                 title: 'Error',
                 text: 'Data tidak ditemukan!',
                 confirmButtonColor: '#667eea'
@@ -295,6 +319,12 @@
 
     // Render table
     function renderTable(page = 1) {
+        // Ensure filteredData is an array
+        if (!Array.isArray(filteredData)) {
+            console.error('filteredData is not an array:', filteredData);
+            filteredData = [];
+        }
+
         const itemsPerPage = 10;
         const start = (page - 1) * itemsPerPage;
         const end = start + itemsPerPage;
@@ -303,8 +333,20 @@
         const tableBody = $('#tableBody');
         tableBody.empty();
 
+        if (paginatedData.length === 0) {
+            tableBody.append(`
+                <tr>
+                    <td colspan="${nextMonthDates.length + 2}" style="text-align: center; padding: 40px;">
+                        <p style="color: #6c757d; font-size: 16px;">📭 Tidak ada data yang ditampilkan</p>
+                    </td>
+                </tr>
+            `);
+            $('#pagination').hide();
+            return;
+        }
+
         paginatedData.forEach(row => {
-            let rowHTML = `<td>${row.name}</td>`;
+            let rowHTML = `<td>${row.name || '-'}</td>`;
             
             nextMonthDates.forEach(dateInfo => {
                 const dateKey = `date_${dateInfo.date}`;
@@ -376,8 +418,16 @@
     $('#searchInput').on('input', function() {
         const searchTerm = $(this).val().toLowerCase();
         
+        // Ensure allData is an array
+        if (!Array.isArray(allData)) {
+            console.error('allData is not an array');
+            filteredData = [];
+            renderTable(1);
+            return;
+        }
+        
         filteredData = allData.filter(row => {
-            return row.name.toLowerCase().includes(searchTerm);
+            return row.name && row.name.toLowerCase().includes(searchTerm);
         });
         
         renderTable(1);
@@ -394,7 +444,7 @@
         });
 
         Toast.fire({
-            type: 'info',
+            icon: 'info',
             title: 'Memuat ulang data...'
         });
 
