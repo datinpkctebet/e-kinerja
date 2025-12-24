@@ -160,4 +160,22 @@ class ActivityRepository extends AbstractRepository implements ActivityInterface
             '2030',
         ];
     }
+
+    public function getScheduleActivity()
+    {
+        $data = Activity::select('activities.id', 'employee_id', 'employees.name as employee_name', 'tupoksis.description as tupoksis_name', 'date')
+                ->join('employees', 'activities.employee_id', '=', 'employees.id')
+                ->join('tupoksis', 'activities.name', '=', 'tupoksis.id')
+                ->where(function ($query) {
+                    $query->where('activities.status', 1)
+                          ->orWhere('activities.status', null);
+                    })
+                ->whereMonth('date', date('m'))
+                ->whereYear('date', date('Y'))
+                ->groupBy('activities.id', 'employee_id', 'employees.name', 'tupoksis.description', 'date')
+                ->orderBy('employee_name', 'ASC')
+                ->get();
+                
+        return $data;
+    }
 }
