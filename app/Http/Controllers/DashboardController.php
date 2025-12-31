@@ -82,119 +82,137 @@ class DashboardController extends Controller
 
     public function scheduleActivity(Request $request)
     {
-        $data = $this->activity->getScheduleActivity();
+        $rows = $this->activity->getScheduleActivity();
 
         $final_data = [];
-        foreach($data as $data){
-            $date_key = 'date_' . ltrim(date('d', strtotime($data->date)), '0');
-            if(!isset($final_data[$data->employee_id])){
-                $final_data[$data->employee_id] = [
-                    'id' => (int) $data->employee_id,
-                    'name' => $data->employee_name,
+        foreach ($rows as $r) {
+            $employeeId = (int) $r->employee_id;
+            $date_key = 'date_' . ltrim(date('d', strtotime($r->date)), '0');
+
+            if (!isset($final_data[$employeeId])) {
+                $final_data[$employeeId] = [
+                    'id' => $employeeId,
+                    'name' => $r->employee_name,
+                    'activity' => []
                 ];
             }
-            $final_data[$data->employee_id][$date_key] = $data->tupoksis_name;
+
+            $time_key = $r->start_time . '-' . $r->end_time;
+
+            if (!isset($final_data[$employeeId]['activity'][$date_key])) {
+                $final_data[$employeeId]['activity'][$date_key] = [];
+            }
+
+            $final_data[$employeeId]['activity'][$date_key][$time_key] = $r->tupoksis_name;
         }
 
-        // pretty_dump($final_data);
+        $final_data = array_values($final_data);
+
+        // $data = [
+        //     [
+        //         'id' => 1,
+        //         'name' => 'Andi',
+        //         'activity' => [
+        //             'date_1' => [
+        //                 '07:30-13:00' => 'Meeting',
+        //                 '13:00-15:00' => 'Project Review',
+        //                 '15:00-18:00' => 'Development',
+        //             ],
+        //             'date_3' => [
+        //                 '09:00-12:00' => 'Code Review',
+        //                 '12:00-17:00' => 'Client Call',
+        //             ],
+        //             'date_5' => [
+        //                 '08:00-12:00' => 'Team Lunch',
+        //                 '12:00-16:00' => 'Brainstorming Session',
+        //             ],
+        //         ]
+        //     ],
+        //     [
+        //         'id' => 2,
+        //         'name' => 'Budi',
+        //         'activity' => []
+        //     ]
+        // ];
+        return response()->json($final_data);
+    }
+
+    public function scheduleActivityToday(Request $request)
+    {
+        // $date_key = $request->input('date');
+        // $data = $this->activity->getScheduleActivityToday(['date' => $date_key]);
+
         $data = [
-            [
-                'id' => 1,
-                'name' => 'Andi',
-                'date_1' => 'Meeting',
-                'date_2' => 'Conference',
-                'date_3' => '',
-                'date_4' => '',
-                'date_5' => 'Training',
-                'date_6' => '',
-                'date_7' => '',
-                'date_8' => '',
-                'date_9' => '',
-                'date_10' => '',
-                'date_11' => '',
-                'date_12' => '',
-                'date_13' => '',
-                'date_14' => '',
-                'date_15' => '',
-                'date_16' => '',
-                'date_17' => '',
-                'date_18' => '',
-                'date_19' => '',
-                'date_20' => '',
-                'date_21' => '',
-                'date_22' => '',
-                'date_23' => '',
-                'date_24' => '',
-                'date_25' => '',
-                'date_26' => '',
-                'date_27' => '',
-                'date_28' => '',
-                'date_29' => '',
-                'date_30' => '',
-                'date_31' => '',
+            "success" => true,
+            "date" => "2024-12-30",
+            "day" => 30,
+            "data" => [
+                "sakit" => 5,
+                "cuti" => 3,
+                "libur" => 2,
+                "izin" => 4,
+                "belum" => 10
             ],
-            [
-                'id' => 2,
-                'name' => 'Budi',
-                'date_1' => 'Training',
-                'date_2' => 'Workshop'
-            ],
-            [
-                'id' => 3,
-                'name' => 'Caca',
-                'date_1' => 'Seminar',
-                'date_2' => 'Workshop'
-            ],
-            [
-                'id' => 4,
-                'name' => 'Dodi',
-                'date_1' => 'Training',
-                'date_2' => 'Conference'
-            ],
-            [
-                'id' => 5,
-                'name' => 'Eka',
-                'date_1' => 'Meeting',
-                'date_2' => 'Seminar'
-            ],
-            [
-                'id' => 6,
-                'name' => 'Fina',
-                'date_1' => 'Workshop',
-                'date_2' => 'Conference'
-            ],
-            [
-                'id' => 7,
-                'name' => 'Gina',
-                'date_1' => 'Training',
-                'date_2' => 'Meeting'
-            ],
-            [
-                'id' => 8,
-                'name' => 'Hadi',
-                'date_1' => 'Seminar',
-                'date_2' => 'Workshop'
-            ],
-            [
-                'id' => 9,
-                'name' => 'Intan',
-                'date_1' => 'Conference',
-                'date_2' => 'Training'
-            ],
-            [
-                'id' => 10,
-                'name' => 'Joko',
-                'date_1' => 'Meeting',
-                'date_2' => 'Seminar'
-            ],
-            [
-                'id' => 11,
-                'name' => 'Kiki',
-                'date_1' => 'Workshop',
-                'date_2' => 'Conference'
-            ],
+            "total_records" => 24
         ];
-        // pretty_dump($data);
+
+        // pretty_dump(response()->json($data));
+
+        return response()->json($data);
+    }
+
+    public function scheduleActivityTodayDetails(Request $request)
+    {
+        // $date_key = $request->input('date');
+        // $employee_id = $request->input('employee_id');
+        // $data = $this->activity->getScheduleActivityTodayDetails(['date' => $date_key, 'employee_id' => $employee_id]);
+
+        $data = [
+            "details" => [
+                "sakit" => [
+                    0 => [
+                        "id" => 1,
+                        "name" => "Andi",
+                        "activity" => "Demam"
+                    ],
+                    1 => [
+                        "id" => 2,
+                        "name" => "Budi",
+                        "activity" => "Sakit kepala"
+                    ],
+                ],
+                "cuti" => [
+                    0 => [
+                        "id" => 3,
+                        "name" => "Caca",
+                        "activity" => "Cuti tahunan"
+                    ],
+                    1 => [
+                        "id" => 4,
+                        "name" => "Dodi",
+                        "activity" => "Cuti menikah"
+                    ],
+                ],
+                "belum" => [
+                    0 => [
+                        "id" => 5,
+                        "name" => "Eka",
+                        "activity" => "Belum absen"
+                    ],
+                    1 => [
+                        "id" => 6,
+                        "name" => "Fina",
+                        "activity" => "Belum absen"
+                    ],
+                    2 => [
+                        "id" => 7,
+                        "name" => "Gina",
+                        "activity" => "Belum absen"
+                    ],
+                ]
+            ]
+        ];
+
         return response()->json($data);
     }
 }

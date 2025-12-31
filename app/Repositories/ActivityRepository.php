@@ -163,17 +163,57 @@ class ActivityRepository extends AbstractRepository implements ActivityInterface
 
     public function getScheduleActivity()
     {
-        $data = Activity::select('activities.id', 'employee_id', 'employees.name as employee_name', 'tupoksis.description as tupoksis_name', 'date')
+        $target = strtotime('+1 month');
+        $month = date('m', $target);
+        $year = date('Y', $target);
+
+        $data = Activity::select('activities.id', 'activities.start as start_time', 'activities.end as end_time', 'employee_id', 'employees.name as employee_name', 'tupoksis.description as tupoksis_name', 'date')
                 ->join('employees', 'activities.employee_id', '=', 'employees.id')
                 ->join('tupoksis', 'activities.name', '=', 'tupoksis.id')
                 ->where(function ($query) {
                     $query->where('activities.status', 1)
                           ->orWhere('activities.status', null);
                     })
-                ->whereMonth('date', date('m'))
-                ->whereYear('date', date('Y'))
-                ->groupBy('activities.id', 'employee_id', 'employees.name', 'tupoksis.description', 'date')
+                ->whereMonth('date', $month)
+                ->whereYear('date', $year)
+                ->groupBy('activities.id', 'activities.start', 'activities.end', 'employee_id', 'employees.name', 'tupoksis.description', 'date')
                 ->orderBy('employee_name', 'ASC')
+                ->get();
+                
+        return $data;
+    }
+
+    public function getScheduleActivityToday(array $param)
+    {
+        $date = $param['date'];
+
+        $data = Activity::select('activities.id', 'employee_id', 'tupoksis.description as tupoksis_name', 'vol', 'date')
+                ->join('tupoksis', 'activities.name', '=', 'tupoksis.id')
+                ->where(function ($query) {
+                    $query->where('activities.status', 1)
+                          ->orWhere('activities.status', null);
+                    })
+                ->where('date', $date)
+                ->orderBy('date', 'ASC')
+                ->get();
+                
+        return $data;
+    }
+
+    public function getScheduleActivityTodayDetails(array $param)
+    {
+        $date = $param['date'];
+        $employee_id = $param['employee_id'];
+
+        $data = Activity::select('activities.id', 'employee_id', 'tupoksis.description as tupoksis_name', 'vol', 'date', 'activities.description as activity_description', 'activities.status as activity_status')
+                ->join('tupoksis', 'activities.name', '=', 'tupoksis.id')
+                ->where(function ($query) {
+                    $query->where('activities.status', 1)
+                          ->orWhere('activities.status', null);
+                    })
+                ->where('employee_id', $employee_id)
+                ->where('date', $date)
+                ->orderBy('date', 'ASC')
                 ->get();
                 
         return $data;

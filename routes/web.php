@@ -47,6 +47,8 @@ Route::group(['middleware' => 'member'], function()
     Route::get('dashboard', 'DashboardController@index');
     Route::post('dashboard', 'DashboardController@store');
     Route::get('schedule/activity', 'DashboardController@scheduleActivity');
+    Route::get('schedule/activity-today', 'DashboardController@scheduleActivityToday');
+    Route::get('schedule/activity-today-details', 'DashboardController@scheduleActivityTodayDetails');
 
     /*
     |--------------------------------------------------------------------------
