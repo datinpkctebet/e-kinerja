@@ -11,6 +11,11 @@
 |
 */
 
+Route::get('/test-reset-cuti', function () {
+    Artisan::call('cuti:reset-tahunan');
+    return 'DONE';
+});
+
 Route::get('/health-check', function() {
     return 'your system running well ^_^';
 });
