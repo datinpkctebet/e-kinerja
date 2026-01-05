@@ -26,7 +26,8 @@ class ResetCutiTahunan extends Command
                 }
             } else {
                 // Jika cuti masih sisa → pindahkan ke penangguhan (maks 6)
-                $employee->total_penangguhan_cuti = min($employee->total_cuti, 6);
+                // $employee->total_penangguhan_cuti = min($employee->total_cuti, 6);
+                $employee->total_penangguhan_cuti = $employee->total_cuti;
 
                 // Reset cuti tahunan = 12
                 $employee->total_cuti = 12;
