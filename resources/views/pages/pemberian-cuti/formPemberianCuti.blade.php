@@ -74,6 +74,11 @@
         <label class="col-9 font-weight-bold text-left col-form-label">{{ @$employee->total_cuti }}</label>
       </div>
 
+      <div class="form-group row">
+        <label class="col-3 col-form-label">Sisa Penangguhan Cuti</label>
+        <label class="col-9 font-weight-bold text-left col-form-label">{{ @$employee->total_penangguhan_cuti }}</label>
+      </div>
+
       @if ($list['jenis'] === 'Cuti Tahunan')
       <div class="form-group row">
         <label class="col-3 col-form-label">Jumlah Cuti yang diambil</label>
