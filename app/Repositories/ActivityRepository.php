@@ -163,9 +163,9 @@ class ActivityRepository extends AbstractRepository implements ActivityInterface
 
     public function getScheduleActivity()
     {
-        $target = strtotime('+1 month');
-        $month = date('m', $target);
-        $year = date('Y', $target);
+        // $target = strtotime('+1 month');
+        $month = date('m');
+        $year = date('Y');
 
         $data = Activity::select('activities.id', 'activities.start as start_time', 'activities.end as end_time', 'employee_id', 'employees.name as employee_name', 'tupoksis.description as tupoksis_name', 'date')
                 ->join('employees', 'activities.employee_id', '=', 'employees.id')

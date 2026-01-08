@@ -240,7 +240,7 @@
         // Generate dates for next month
         function generateNextMonthDates() {
             const today = new Date();
-            const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+            const nextMonth = new Date(today.getFullYear(), today.getMonth(), 1);
             const monthName = nextMonth.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
             
             $('#monthInfo').text(monthName);
