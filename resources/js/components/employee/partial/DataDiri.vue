@@ -184,6 +184,15 @@
       </div>
     </div>
 
+    <div class="form-group row">
+      <div class="col-lg-6"></div>
+      <div class="col-lg-6">
+        <label>Total Penangguhan Cuti <span class="text-danger">*</span></label>
+        <input class="form-control" type="number" placeholder="Total Penangguhan Cuti"
+          v-model="dataDiri.total_penangguhan_cuti">
+      </div>
+    </div>    
+
     <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg kt-separator--portlet-fit"></div>
 
     <div class="form-group row">

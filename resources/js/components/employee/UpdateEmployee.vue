@@ -877,6 +877,7 @@ export default {
           email: null,
           no_kk: null,
           total_cuti: null,
+          total_penangguhan_cuti: null,
           status_pegawai: null,
           unit_kerja: [],
           jenis_jabatan: null,
@@ -1080,6 +1081,7 @@ export default {
       this.form.data_diri.email = this.list.email;
       this.form.data_diri.no_kk = this.list.no_kk;
       this.form.data_diri.total_cuti = this.list.total_cuti;
+      this.form.data_diri.total_penangguhan_cuti = this.list.total_penangguhan_cuti;
       this.form.data_diri.status_pegawai = this.list.status_pegawai;
       this.form.data_diri.unit_kerja = this.setType(this.list.unit_kerja, 'unitKerja');
       this.form.data_diri.jenis_jabatan = this.list.jenis_jabatan;
@@ -1333,6 +1335,7 @@ export default {
         email,
         no_kk,
         total_cuti,
+        total_penangguhan_cuti,
         status_pegawai,
         unit_kerja,
         jenis_jabatan,
@@ -1371,6 +1374,7 @@ export default {
         email: email,
         no_kk: no_kk,
         total_cuti: total_cuti,
+        total_penangguhan_cuti: total_penangguhan_cuti,
         status_pegawai: status_pegawai,
         unit_kerja: this.generateType(unit_kerja),
         jenis_jabatan: jenis_jabatan,

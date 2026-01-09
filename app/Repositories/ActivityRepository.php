@@ -4,6 +4,7 @@ use App\Repositories\AbstractRepository;
 use App\Repositories\Contracts\ActivityInterface;
 
 use App\Models\Activity;
+use App\Models\Employee;
 
 class ActivityRepository extends AbstractRepository implements ActivityInterface
 {
@@ -183,39 +184,65 @@ class ActivityRepository extends AbstractRepository implements ActivityInterface
         return $data;
     }
 
-    public function getScheduleActivityToday(array $param)
+    public function getScheduleActivityToday()
     {
-        $date = $param['date'];
+        // $today = date('Y-m-d');
+        $today = date('2025-07-15'); // for testing purpose
 
-        $data = Activity::select('activities.id', 'employee_id', 'tupoksis.description as tupoksis_name', 'vol', 'date')
-                ->join('tupoksis', 'activities.name', '=', 'tupoksis.id')
+        $employee_list = Employee::select('id', 'name')
+            ->where('active', 1)
+            ->whereRaw("nip REGEXP '^[0-9]+$'")
+            ->get();
+        $employee_count = $employee_list->count();
+
+        $activities = Activity::select('activities.id', 'activities.name as activity_name', 'employee_id', 'date')
+                // ->join('tupoksis', 'activities.name', '=', 'tupoksis.id')
                 ->where(function ($query) {
                     $query->where('activities.status', 1)
-                          ->orWhere('activities.status', null);
-                    })
-                ->where('date', $date)
+                        ->orWhere('activities.status', null);
+                })
+                ->where('date', $today)
                 ->orderBy('date', 'ASC')
                 ->get();
-                
-        return $data;
+        $activity_count = $activities->count();
+
+        return [
+            'date' => $today,
+            'employees' => $employee_list,
+            'employee_count' => $employee_count,
+            'activities' => $activities,
+            'activity_count' => $activity_count,
+        ];
     }
 
-    public function getScheduleActivityTodayDetails(array $param)
+    public function getScheduleActivityTodayDetails()
     {
-        $date = $param['date'];
-        $employee_id = $param['employee_id'];
+        // $date = date('Y-m-d');
+        $date = date('2025-07-15');
 
-        $data = Activity::select('activities.id', 'employee_id', 'tupoksis.description as tupoksis_name', 'vol', 'date', 'activities.description as activity_description', 'activities.status as activity_status')
-                ->join('tupoksis', 'activities.name', '=', 'tupoksis.id')
-                ->where(function ($query) {
-                    $query->where('activities.status', 1)
-                          ->orWhere('activities.status', null);
-                    })
-                ->where('employee_id', $employee_id)
-                ->where('date', $date)
-                ->orderBy('date', 'ASC')
-                ->get();
+        $employee_list = Employee::select('id', 'name')
+            ->where('active', 1)
+            ->whereRaw("nip REGEXP '^[0-9]+$'")
+            ->get();
+        $employee_map = $employee_list->keyBy('id');
+
+        $activities = Activity::select(
+                'activities.id',
+                'activities.employee_id',
+                'activities.name as activity_name',
+                'activities.description as activity_description'
+            )
+            ->where(function ($query) {
+                $query->where('activities.status', 1)
+                    ->orWhereNull('activities.status');
+            })
+            ->where('date', $date)
+            ->get();
                 
-        return $data;
+        return [
+            'employees' => $employee_list,
+            'employees_map' => $employee_map,
+            'activities' => $activities,
+        ];
     }
 }

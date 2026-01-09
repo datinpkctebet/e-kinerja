@@ -695,18 +695,13 @@
         // Update display with data
         function updateDisplayToday() {
             // Update counts
+            console.log('Activity Data:', activityData);
             $('#count-sakit').text(activityData.sakit || 0);
             $('#count-cuti').text(activityData.cuti || 0);
             $('#count-libur').text(activityData.libur || 0);
             $('#count-izin').text(activityData.izin || 0);
             $('#count-belum').text(activityData.belum || 0);
-
-            // Calculate total input (excluding belum terinput)
-            const totalInput = (activityData.sakit || 0) + 
-                                (activityData.cuti || 0) + 
-                                (activityData.libur || 0) + 
-                                (activityData.izin || 0);
-            $('#totalInput').text(totalInput);
+            $('#totalInput').text(activityData.total || 0);
 
             // Update chart
             updateChartToday();

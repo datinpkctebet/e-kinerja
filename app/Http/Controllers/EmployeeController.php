@@ -195,6 +195,7 @@ class EmployeeController extends Controller
             'email' => $request->input('email'),
             'no_kk' => $request->input('no_kk'),
             'total_cuti' => $request->input('total_cuti'),
+            'total_penangguhan_cuti' => $request->input('total_penangguhan_cuti'),
             'status_pegawai' => $request->input('status_pegawai'),
             'unit_kerja' => $request->input('unit_kerja'),
             'jenis_jabatan' => $request->input('jenis_jabatan'),

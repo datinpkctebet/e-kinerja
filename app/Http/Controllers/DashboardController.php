@@ -107,112 +107,107 @@ class DashboardController extends Controller
         }
 
         $final_data = array_values($final_data);
-
-        // $data = [
-        //     [
-        //         'id' => 1,
-        //         'name' => 'Andi',
-        //         'activity' => [
-        //             'date_1' => [
-        //                 '07:30-13:00' => 'Meeting',
-        //                 '13:00-15:00' => 'Project Review',
-        //                 '15:00-18:00' => 'Development',
-        //             ],
-        //             'date_3' => [
-        //                 '09:00-12:00' => 'Code Review',
-        //                 '12:00-17:00' => 'Client Call',
-        //             ],
-        //             'date_5' => [
-        //                 '08:00-12:00' => 'Team Lunch',
-        //                 '12:00-16:00' => 'Brainstorming Session',
-        //             ],
-        //         ]
-        //     ],
-        //     [
-        //         'id' => 2,
-        //         'name' => 'Budi',
-        //         'activity' => []
-        //     ]
-        // ];
         return response()->json($final_data);
     }
 
     public function scheduleActivityToday(Request $request)
     {
-        // $date_key = $request->input('date');
-        // $data = $this->activity->getScheduleActivityToday(['date' => $date_key]);
+        $data = $this->activity->getScheduleActivityToday();
+
+        $activities = $data['activities'];
+        $employee_list = $data['employees'];
+
+        $data_sakit = $activities->where('activity_name', 'Sakit')->all();
+        $data_cuti = $activities->where('activity_name', 'Cuti')->all();
+        $data_libur = $activities->where('activity_name', 'Libur')->all();
+        $data_izin = $activities->where('activity_name', 'Izin')->all();
+        $data_sudah = $activities->whereNotIn('activity_name', ['Sakit', 'Cuti', 'Libur', 'Izin'])->all();
+
+        // ambil employee_id yang sudah input activity hari ini, lalu eliminasi dari employee_list
+        $employee_ids_with_activity = $activities->pluck('employee_id')->unique();
+        $employee_ids_all = $employee_list->pluck('id');
+        $employee_ids_without = $employee_ids_all->diff($employee_ids_with_activity);
+
+        $data_sakit_count = count($data_sakit);
+        $data_cuti_count = count($data_cuti);
+        $data_libur_count = count($data_libur);
+        $data_izin_count = count($data_izin);
+        $data_belum_count = $employee_ids_without->count();
+        $data_sudah_count = count($data_sudah);
 
         $data = [
             "success" => true,
-            "date" => "2024-12-30",
-            "day" => 30,
+            "date" => date('Y-m-d'),
+            "day" => (int) date('d'),
             "data" => [
-                "sakit" => 5,
-                "cuti" => 3,
-                "libur" => 2,
-                "izin" => 4,
-                "belum" => 10
-            ],
-            "total_records" => 24
+                "sakit" => $data_sakit_count,
+                "cuti" => $data_cuti_count,
+                "libur" => $data_libur_count,
+                "izin" => $data_izin_count,
+                "belum" => $data_belum_count,
+                "total" => $data_sudah_count
+            ]
         ];
-
-        // pretty_dump(response()->json($data));
 
         return response()->json($data);
     }
 
     public function scheduleActivityTodayDetails(Request $request)
     {
-        // $date_key = $request->input('date');
-        // $employee_id = $request->input('employee_id');
-        // $data = $this->activity->getScheduleActivityTodayDetails(['date' => $date_key, 'employee_id' => $employee_id]);
+        $data = $this->activity->getScheduleActivityTodayDetails();
 
-        $data = [
-            "details" => [
-                "sakit" => [
-                    0 => [
-                        "id" => 1,
-                        "name" => "Andi",
-                        "activity" => "Demam"
-                    ],
-                    1 => [
-                        "id" => 2,
-                        "name" => "Budi",
-                        "activity" => "Sakit kepala"
-                    ],
-                ],
-                "cuti" => [
-                    0 => [
-                        "id" => 3,
-                        "name" => "Caca",
-                        "activity" => "Cuti tahunan"
-                    ],
-                    1 => [
-                        "id" => 4,
-                        "name" => "Dodi",
-                        "activity" => "Cuti menikah"
-                    ],
-                ],
-                "belum" => [
-                    0 => [
-                        "id" => 5,
-                        "name" => "Eka",
-                        "activity" => "Belum absen"
-                    ],
-                    1 => [
-                        "id" => 6,
-                        "name" => "Fina",
-                        "activity" => "Belum absen"
-                    ],
-                    2 => [
-                        "id" => 7,
-                        "name" => "Gina",
-                        "activity" => "Belum absen"
-                    ],
-                ]
-            ]
+        $employee_list = $data['employees'];
+        $employee_map = $data['employees_map'];
+        $activities = $data['activities'];
+
+        $details = [
+            'sakit' => [],
+            'cuti' => [],
+            'libur' => [],
+            'izin' => [],
+            'belum' => []
         ];
 
-        return response()->json($data);
+        foreach ($activities as $a) {
+            $cat = strtolower($a->activity_name);
+            $activity_text = !empty($a->activity_description) ? $a->activity_description : $a->activity_name;
+            $emp = $employee_map->get($a->employee_id);
+            $name = $emp ? $emp->name : null;
+
+            if ($activity_text == 'null') {
+                $activity_text = 'Tidak ada keterangan';
+            }
+
+            $item = [
+                'id' => (int) $a->employee_id,
+                'name' => $name,
+                'activity' => $activity_text
+            ];
+
+            if (in_array($cat, ['sakit', 'cuti', 'libur', 'izin'])) {
+                $details[$cat][] = $item;
+            }
+        }
+
+        $employee_ids_with_activity = $activities->pluck('employee_id')->unique()->all();
+
+        foreach ($employee_list as $emp) {
+            if (!in_array($emp->id, $employee_ids_with_activity)) {
+                $details['belum'][] = [
+                    'id' => (int) $emp->id,
+                    'name' => $emp->name,
+                    'activity' => 'Belum Input Aktivitas'
+                ];
+            }
+        }
+
+        $result = [
+            "success" => true,
+            "date" => date('Y-m-d'),
+            "day" => (int) date('d'),
+            "details" => $details
+        ];
+
+        return response()->json($result);
     }
 }
