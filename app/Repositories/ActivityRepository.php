@@ -186,8 +186,8 @@ class ActivityRepository extends AbstractRepository implements ActivityInterface
 
     public function getScheduleActivityToday()
     {
-        // $today = date('Y-m-d');
-        $today = date('2025-07-15'); // for testing purpose
+        $today = date('Y-m-d');
+        // $today = date('2025-07-15'); // for testing purpose
 
         $employee_list = Employee::select('id', 'name')
             ->where('active', 1)
@@ -217,8 +217,8 @@ class ActivityRepository extends AbstractRepository implements ActivityInterface
 
     public function getScheduleActivityTodayDetails()
     {
-        // $date = date('Y-m-d');
-        $date = date('2025-07-15');
+        $date = date('Y-m-d');
+        // $date = date('2025-07-15');
 
         $employee_list = Employee::select('id', 'name')
             ->where('active', 1)
