@@ -178,7 +178,7 @@ class PemberianCutiController extends Controller
             ];
         } else { // jika ada saldo penangguhan cuti, update saldo penangguhan cuti dan cuti tahunan jika penangguhan cuti minus setelah dikalkulasi diatas
             if($total_cuti < 0) {
-                $total_cuti = (int) $employee->total_cuti - (int) $total_cuti;
+                $total_cuti = (int) $employee->total_cuti (int) $total_cuti;
                 $total_cuti_penangguhan = (int) 0;
                 
                 $data = [
