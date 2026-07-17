@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Repositories\SetupRepository;
 use App\Repositories\ActivityRepository;
+use App\Repositories\EmployeeRepository;
 use App\Repositories\ProfessionRepository;
 
 class DashboardController extends Controller
@@ -13,11 +14,13 @@ class DashboardController extends Controller
     public function __construct(
         SetupRepository $setup,
         ActivityRepository $activity,
+        EmployeeRepository $employee,
         ProfessionRepository $profession
     )
     {
         $this->setup = $setup;
         $this->activity = $activity;
+        $this->employee = $employee;
         $this->profession = $profession;
     }
 
