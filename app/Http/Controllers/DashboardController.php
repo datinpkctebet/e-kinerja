@@ -6,16 +6,19 @@ use Illuminate\Http\Request;
 
 use App\Repositories\SetupRepository;
 use App\Repositories\ActivityRepository;
+use App\Repositories\ProfessionRepository;
 
 class DashboardController extends Controller
 {
     public function __construct(
         SetupRepository $setup,
-        ActivityRepository $activity
+        ActivityRepository $activity,
+        ProfessionRepository $profession
     )
     {
         $this->setup = $setup;
         $this->activity = $activity;
+        $this->profession = $profession;
     }
 
     /**
@@ -31,11 +34,16 @@ class DashboardController extends Controller
 
         $scheduleActivity = $this->activity->getScheduleActivity();
 
-        // pretty_dump($scheduleActivity);
+        $jabatans = $this->profession->get();
+
+        $units = $this->employee->unit();
+        // pretty_dump($units);
 
         $data = [
             'admin' => $admin,
             'employee' => $employee,
+            'jabatans' => $jabatans,
+            'units' => $units,
             'scheduleActivity' => $scheduleActivity,
         ];
 

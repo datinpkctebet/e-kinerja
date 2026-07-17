@@ -84,7 +84,7 @@
             </div>
 
             <div class="controls">
-                <button class="btn btn-primary" onclick="refreshDataToday()">🔄 Refresh</button>
+                <button class="btn btn-primary" onclick="refreshDataToday()">Refresh</button>
             </div>
 
             <div id="loading" class="loading">
@@ -145,10 +145,37 @@
             </div>
 
             <div class="controls">
-                <div class="search-box">
+                <div class="search-box" class="form-control">
                     <input type="text" id="searchInputSchedule" placeholder="🔍 Cari nama...">
                 </div>
-                <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh</button>
+                
+                @php
+                    $jabatanSelect = (@$input['jabatanSelect']) ? $input['jabatanSelect'] : 0;
+                    $unitSelect = (@$input['unitSelect']) ? $input['unitSelect'] : 0;
+                @endphp
+                
+                <select id="jabatanSelect" class="form-control col-md-4" name="jabatanSelect">
+                    <option value=""> 
+                        Pilih Jabatan 
+                    </option>
+                    @foreach ($jabatans as $value)
+                        <option value="{{ $value->id }}" @if($value->id == $jabatanSelect) selected @endif> 
+                            {{ $value->name }}
+                        </option>
+                    @endforeach
+                </select>
+                
+                <select id="unitSelect" class="form-control col-md-4" name="unitSelect">
+                    <option value=""> 
+                        Pilih Unit 
+                    </option>
+                    @foreach ($units as $value)
+                        <option value="{{ $value->id }}" @if($value->id == $unitSelect) selected @endif> 
+                            {{ $value->title }}
+                        </option>
+                    @endforeach
+                </select>
+                <button class="btn btn-primary" onclick="refreshData()">Filter</button>
             </div>
 
             <div class="table-wrapper">
