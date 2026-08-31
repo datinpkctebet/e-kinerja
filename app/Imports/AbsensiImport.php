@@ -42,6 +42,7 @@ class AbsensiImport implements ToModel, WithHeadingRow
         // Data yang akan di-save / update
         $data = [
             'employee_id'  => $employee->id,
+            // 'date'         => "2026-08-01",
             'date'         => $dateValue->toDateString(),
             'hari_kerja'   => (int) $row['hari_kerja'] ?? 0,
             'telat'        => (int) $row['telat'] ?? 0,
