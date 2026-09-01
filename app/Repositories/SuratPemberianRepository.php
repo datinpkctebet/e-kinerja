@@ -88,7 +88,8 @@ class SuratPemberianRepository extends AbstractRepository implements SuratPember
             'Non PNS',
             'Kontrak',
             'PJLP',
-            'Non-PNS Tetap'
+            'Non-PNS Tetap',
+            'PPPK Paruh Waktu'
         ];
     }
 
