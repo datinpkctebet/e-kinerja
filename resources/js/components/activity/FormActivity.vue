@@ -158,8 +158,10 @@ export default {
       isDisabled: false,
 
       disabledDate: {
-        to: moment().subtract(1, "month").startOf("month").toDate(),
-        from: moment().add(2, "year").startOf("year").toDate(),
+        to: moment().startOf("month").toDate(),
+        from: moment().endOf("month").toDate(),
+        // to: moment().subtract(1, "month").startOf("month").toDate(),
+        // from: moment().add(2, "year").startOf("year").toDate(),
       },
 
       timepickerFormat: 'HH:mm',
