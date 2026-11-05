@@ -105,12 +105,13 @@ class PenilaianController extends Controller
             'year' => $request->input('year') ?? $now->year,
         ];
 
-        $cacheTime = 3600 * +env('CACHE_TIME', 24);
-        $cacheName = 'employee-by-unit-'. session('employee')['unit_kerja'] .'-'. $param['month'] .'-'. $param['year'];
-        $employee = \Cache::remember($cacheName, $cacheTime, function () use ($param) {
-            return $this->employee->getEmployeeByUnit($param);
-        });
+        // $cacheTime = 3600 * +env('CACHE_TIME', 24);
+        // $cacheName = 'employee-by-unit-'. session('employee')['unit_kerja'] .'-'. $param['month'] .'-'. $param['year'];
+        // $employee = \Cache::remember($cacheName, $cacheTime, function () use ($param) {
+        //     return $this->employee->getEmployeeByUnit($param);
+        // });
 
+        $employee = $this->employee->getEmployeeByUnit($param);
         $data = [
             'list' => $list,
             'question' => $this->question->get(),
